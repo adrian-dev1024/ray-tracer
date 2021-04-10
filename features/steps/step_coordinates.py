@@ -22,7 +22,7 @@ Scenario: A Coordinate with w=0 is a vector
 # ----------------------------------------------------------------------------
 # STEPS:
 # ----------------------------------------------------------------------------
-from behave import given, when, then
+from behave import given, then
 
 from src.coordinates import Coordinate, is_a_point, is_a_vector, Point, Vector
 

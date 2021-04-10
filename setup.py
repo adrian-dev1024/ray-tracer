@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ray-tracer", # Replace with your own username
+    name="ray-tracer",
     version="0.0.1",
     author="Adrian Garay",
     author_email="agaray913@gmail.com",
