@@ -24,7 +24,7 @@ Scenario: A Coordinate with w=0 is a vector
 # ----------------------------------------------------------------------------
 from behave import given, when, then
 
-from src.coordinates import Coordinate, is_a_point, is_a_vector
+from src.coordinates import Coordinate, is_a_point, is_a_vector, Point, Vector
 
 
 @given('a ← Coordinate(4.3, -4.2, 3.1, 1.0)')
@@ -35,6 +35,16 @@ def step_impl(context):
 @given('b ← Coordinate(4.3, -4.2, 3.1, 0.0)')
 def step_impl(context):
     context.b = Coordinate(4.3, -4.2, 3.1, 0.0)
+
+
+@given('p ← Point(4, -4, 3)')
+def step_impl(context):
+    context.p = Point(4, -4, 3)
+
+
+@given('v ← Vector(4, -4, 3)')
+def step_impl(context):
+    context.v = Vector(4, -4, 3)
 
 
 @then('a.x = 4.3')
@@ -96,3 +106,12 @@ def step_impl(context):
 def step_impl(context):
     assert is_a_vector(context.b)
 
+
+@then('p = Coordinate(4, -4, 3, 1)')
+def step_impl(context):
+    assert context.p.coordinate == Coordinate(4, -4, 3, 1)
+
+
+@then('v = Coordinate(4, -4, 3, 0)')
+def step_impl(context):
+    assert context.v.coordinate == Coordinate(4, -4, 3, 0)

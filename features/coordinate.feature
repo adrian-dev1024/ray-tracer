@@ -17,3 +17,11 @@ Scenario: A Coordinate with w=0 is a vector
     And b.w = 0.0
     And b is not a point
     And b is a vector
+
+Scenario: Point() creates tuples with w=1
+  Given p ← Point(4, -4, 3)
+  Then p = Coordinate(4, -4, 3, 1)
+
+Scenario: Vector() creates tuples with w=0
+  Given v ← Vector(4, -4, 3)
+  Then v = Coordinate(4, -4, 3, 0)
