@@ -40,7 +40,6 @@ class Coordinate:
             return Vector(self.x, self.y, self.z)
         return self
 
-
     def __eq__(self, other):
         """Overrides the default implementation"""
         if isinstance(other, Coordinate):
