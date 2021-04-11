@@ -1,3 +1,6 @@
+"""
+Chapter 1
+"""
 from dataclasses import dataclass
 
 from src.coordinates import Point, Vector
