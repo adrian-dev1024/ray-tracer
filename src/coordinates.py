@@ -2,6 +2,14 @@ import math
 from dataclasses import dataclass
 
 
+class CoordinateNotPoint(Exception):
+    pass
+
+
+class CoordinateNotVector(Exception):
+    pass
+
+
 @dataclass(eq=False)
 class Coordinate:
     x: float
@@ -14,6 +22,24 @@ class Coordinate:
 
     def is_a_vector(self):
         return self.w == Vector.w
+
+    def __to_point(self):
+        if self.is_a_point():
+            return Point(self.x, self.y, self.z)
+        raise CoordinateNotPoint()
+
+    def __to_vector(self):
+        if self.is_a_point():
+            return Vector(self.x, self.y, self.z)
+        raise CoordinateNotVector()
+
+    def __convert(self):
+        if self.is_a_point():
+            return Point(self.x, self.y, self.z)
+        elif self.is_a_vector():
+            return Vector(self.x, self.y, self.z)
+        return self
+
 
     def __eq__(self, other):
         """Overrides the default implementation"""
@@ -31,7 +57,7 @@ class Coordinate:
             self.y + other.y,
             self.z + other.z,
             self.w + other.w
-        )
+        ).__convert()
 
     # TODO: Only works for 2 point to get a vector
     def __sub__(self, other):
@@ -40,10 +66,11 @@ class Coordinate:
             self.y - other.y,
             self.z - other.z,
             self.w - other.w
-        )
+        ).__convert()
 
     def __neg__(self):
-        return Coordinate(0, 0, 0, 0) - self
+        # n = Coordinate(0, 0, 0, 0) - self
+        return (Coordinate(0, 0, 0, 0) - self).__convert()
 
     def __mul__(self, other):
         scalar = float(other)
@@ -52,7 +79,7 @@ class Coordinate:
             self.y * scalar,
             self.z * scalar,
             self.w * scalar
-        )
+        ).__convert()
 
     def __truediv__(self, other):
         scalar = float(other)
@@ -61,7 +88,7 @@ class Coordinate:
             self.y / scalar,
             self.z / scalar,
             self.w / scalar
-        )
+        ).__convert()
 
 @dataclass
 class Point(Coordinate):
