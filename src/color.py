@@ -43,3 +43,6 @@ class Color:
             )
         else:
             return NotImplemented
+
+    def __str__(self):
+        return f'(r={self.red},g={self.green},b={self.blue})'
