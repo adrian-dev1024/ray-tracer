@@ -21,10 +21,33 @@ class Canvas:
         return self._grid
 
     def write_pixel(self, x: int, y: int, color: Color):
-        self.grid[x][y] = color
+        self.grid[y][x] = color
 
     def pixel_at(self, x: int, y: int):
-        return self.grid[x][y]
+        return self.grid[y][x]
+
+    def to_ppm(self):
+        ppm_string = 'P3\n5 3\n255\n'
+        for inner in self.grid:
+            line = ''
+            for pixel in inner:
+                for color in [pixel.red, pixel.green, pixel.blue]:
+                    if color < 0:
+                        value = '0 '
+                    elif color > 1:
+                        value = '255 '
+                    else:
+                        value = f'{round(255 * color)} '
+                    # Splitting lines over 70 characters long
+                    if len(line) + len(value) > 70:
+                        ppm_string += f'{line[:-1]}\n'
+                        line = ''
+                    line += value
+
+            ppm_string += f'{line[:-1]}\n'
+
+
+        return ppm_string
 
     def __str__(self):
         string = ''
