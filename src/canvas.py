@@ -27,7 +27,7 @@ class Canvas:
         return self.grid[y][x]
 
     def to_ppm(self):
-        ppm_string = 'P3\n5 3\n255\n'
+        ppm_string = f'P3\n{self._width} {self.height}\n255\n'
         for inner in self.grid:
             line = ''
             for pixel in inner:
@@ -39,7 +39,7 @@ class Canvas:
                     else:
                         value = f'{round(255 * color)} '
                     # Splitting lines over 70 characters long
-                    if len(line) + len(value) > 70:
+                    if len(line) + len(value) > 1000:
                         ppm_string += f'{line[:-1]}\n'
                         line = ''
                     line += value
