@@ -39,7 +39,7 @@ class Canvas:
                     else:
                         value = f'{round(255 * color)} '
                     # Splitting lines over 70 characters long
-                    if len(line) + len(value) > 1000:
+                    if len(line) + len(value) > 70:
                         ppm_string += f'{line[:-1]}\n'
                         line = ''
                     line += value
