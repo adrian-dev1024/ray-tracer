@@ -27,7 +27,7 @@ class Canvas:
         return self.grid[y][x]
 
     def to_ppm(self):
-        ppm_string = 'P3\n5 3\n255\n'
+        ppm_string = f'P3\n{self._width} {self.height}\n255\n'
         for inner in self.grid:
             line = ''
             for pixel in inner:
