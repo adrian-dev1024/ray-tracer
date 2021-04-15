@@ -46,7 +46,6 @@ class Canvas:
 
             ppm_string += f'{line[:-1]}\n'
 
-
         return ppm_string
 
     def __str__(self):
