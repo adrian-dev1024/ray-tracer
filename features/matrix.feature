@@ -33,12 +33,12 @@ Feature: Matrices
     And m[2,2] = 1
 
   Scenario: Matrix equality with identical matrices
-    Given the following Matrix a:
+    Given the following 4x4 Matrix a:
       | 1 | 2 | 3 | 4 |
       | 5 | 6 | 7 | 8 |
       | 9 | 8 | 7 | 6 |
       | 5 | 4 | 3 | 2 |
-    And the following matrix b:
+    And the following 4x4 Matrix b:
       | 1 | 2 | 3 | 4 |
       | 5 | 6 | 7 | 8 |
       | 9 | 8 | 7 | 6 |
@@ -46,14 +46,52 @@ Feature: Matrices
     Then a = b
 
   Scenario: Matrix equality with different matrices
-    Given the following Matrix a:
+    Given the following 4x4 Matrix a:
       | 1 | 2 | 3 | 4 |
       | 5 | 6 | 7 | 8 |
       | 9 | 8 | 7 | 6 |
       | 5 | 4 | 3 | 2 |
-    And the following Matrix b:
+    And the following 4x4 Matrix b:
       | 2 | 3 | 4 | 5 |
       | 6 | 7 | 8 | 9 |
       | 8 | 7 | 6 | 5 |
       | 4 | 3 | 2 | 1 |
     Then a != b
+
+  Scenario: Multiplying two Matrix 4x4
+    Given the following 4x4 Matrix a:
+      | 1 | 2 | 3 | 4 |
+      | 5 | 6 | 7 | 8 |
+      | 9 | 8 | 7 | 6 |
+      | 5 | 4 | 3 | 2 |
+    And the following 4x4 Matrix b:
+      | -2 | 1 | 2 |  3 |
+      |  3 | 2 | 1 | -1 |
+      |  4 | 3 | 6 |  5 |
+      |  1 | 2 | 7 |  8 |
+    Then a * b is the following 4x4 Matrix:
+      | 20|  22 |  50 |  48 |
+      | 44|  54 | 114 | 108 |
+      | 40|  58 | 110 | 102 |
+      | 16|  26 |  46 |  42 |
+
+  Scenario: Multiplying two Matrix
+    Given the following 2x3 Matrix a:
+      | 1 | 2 | 3 |
+      | 4 | 5 | 6 |
+    And the following 3x2 Matrix b:
+      |  7 |  8 |
+      |  9 | 10 |
+      | 11 | 12 |
+    Then a * b is the following 2x2 Matrix:
+      |  58 |  64 |
+      | 139 | 154 |
+
+  Scenario: A matrix multiplied by a tuple
+    Given the following 4x4 Matrix a:
+      | 1 | 2 | 3 | 4 |
+      | 2 | 4 | 4 | 2 |
+      | 8 | 6 | 4 | 1 |
+      | 0 | 0 | 0 | 1 |
+    And b ← Coordinate(1, 2, 3, 1)
+    Then a * b = Coordinate(18, 24, 33, 1)
