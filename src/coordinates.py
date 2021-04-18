@@ -118,3 +118,11 @@ class Vector(Coordinate):
             self.z * other.x - self.x * other.z,
             self.x * other.y - self.y * other.x
         )
+
+
+def convert(coordinate: Coordinate):
+    if coordinate.is_a_point():
+        return Point(coordinate.x, coordinate.y, coordinate.z)
+    elif coordinate.is_a_vector():
+        return Vector(coordinate.x, coordinate.y, coordinate.z)
+    return coordinate
