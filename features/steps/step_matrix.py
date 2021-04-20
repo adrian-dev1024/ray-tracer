@@ -11,7 +11,7 @@ import itertools
 from behave import given, then, when
 
 from src.coordinates import Coordinate
-from src.matrix import Matrix
+from src.matrix import Matrix, IdentityMatrix
 
 
 @given('the following 4x4 Matrix m')
@@ -59,6 +59,11 @@ def step_impl(context):
 @given('b ← Coordinate(1, 2, 3, 1)')
 def step_impl(context):
     context.b = Coordinate(1, 2, 3, 1)
+
+
+@given('a ← Coordinate(1, 2, 3, 4)')
+def step_impl(context):
+    context.a = Coordinate(1, 2, 3, 4)
 
 
 @then('m[0,0] = 1')
@@ -148,3 +153,13 @@ def step_impl(context):
 @then('a * b = Coordinate(18, 24, 33, 1)')
 def step_impl(context):
     assert context.a * context.b == Coordinate(18, 24, 33, 1)
+
+
+@then('a * identity_matrix = a')
+def step_impl(context):
+    assert context.a * IdentityMatrix == context.a
+
+
+@then('identity_matrix * a = a')
+def step_impl(context):
+    assert IdentityMatrix * context.a == context.a

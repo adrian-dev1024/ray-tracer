@@ -95,3 +95,15 @@ Feature: Matrices
       | 0 | 0 | 0 | 1 |
     And b ← Coordinate(1, 2, 3, 1)
     Then a * b = Coordinate(18, 24, 33, 1)
+
+  Scenario: Multiplying a matrix by the identity matrix
+    Given the following 4x4 Matrix a:
+      | 0 | 1 |  2 |  4 |
+      | 1 | 2 |  4 |  8 |
+      | 2 | 4 |  8 | 16 |
+      | 4 | 8 | 16 | 32 |
+    Then a * identity_matrix = a
+
+  Scenario: Multiplying the identity matrix by a tuple
+    Given a ← Coordinate(1, 2, 3, 4)
+    Then identity_matrix * a = a

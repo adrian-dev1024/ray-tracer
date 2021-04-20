@@ -1,4 +1,5 @@
 import logging
+from decimal import Decimal
 
 from src.coordinates import Coordinate, convert
 
@@ -9,7 +10,7 @@ class MatrixError(Exception):
     pass
 
 
-class Matrix:
+class Matrix(object):
 
     def __init__(self, row_num, col_num, values=None, default_value=0):
         self.__row_num = row_num
@@ -43,6 +44,8 @@ class Matrix:
                    and self.__matrix == other.__matrix
 
     def __mul__(self, other):
+        if isinstance(other, _IdentityMatrix):
+            return self
         if isinstance(other, Coordinate):
             res = self * Matrix(4, 1, [other.x, other.y, other.z, other.x])
             return convert(Coordinate(res[0, 0], res[1, 0], res[2, 0], res[3, 0]))
@@ -59,3 +62,27 @@ class Matrix:
             return Matrix(self.row_num, other.col_num, values)
         else:
             raise MatrixError('Can only multiply by Coordinate or Matrix')
+
+
+class _IdentityMatrix(object):
+    _instance = None
+
+    # def __init__(self, row_num, col_num):
+    #
+    #     super().__init__(row_num, col_num)
+
+    def __new__(cls):
+        if cls._instance is None:
+            print('Creating the object')
+            cls._instance = super(_IdentityMatrix, cls).__new__(cls)
+
+        return cls._instance
+
+    def __mul__(self, other):
+        if isinstance(other, Coordinate) or isinstance(other, Matrix):
+            return other
+        else:
+            raise MatrixError('Can only multiply by Coordinate or Matrix')
+
+
+IdentityMatrix = _IdentityMatrix()
