@@ -1,5 +1,4 @@
 import logging
-from decimal import Decimal
 
 from src.coordinates import Coordinate, convert
 
@@ -63,13 +62,17 @@ class Matrix(object):
         else:
             raise MatrixError('Can only multiply by Coordinate or Matrix')
 
+    def transpose(self):
+        values = []
+        for c in range(self.col_num):
+            for r in range(self.row_num):
+                values.append(self[r, c])
+
+        return Matrix(self.col_num, self.row_num, values=values)
+
 
 class _IdentityMatrix(object):
     _instance = None
-
-    # def __init__(self, row_num, col_num):
-    #
-    #     super().__init__(row_num, col_num)
 
     def __new__(cls):
         if cls._instance is None:
@@ -84,5 +87,8 @@ class _IdentityMatrix(object):
         else:
             raise MatrixError('Can only multiply by Coordinate or Matrix')
 
+    def transpose(self):
+        return self
 
+# Singleton
 IdentityMatrix = _IdentityMatrix()

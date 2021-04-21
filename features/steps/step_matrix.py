@@ -66,6 +66,11 @@ def step_impl(context):
     context.a = Coordinate(1, 2, 3, 4)
 
 
+@given('a ← identity_matrix.transpose()')
+def step_impl(context):
+    context.a = IdentityMatrix.transpose()
+
+
 @then('m[0,0] = 1')
 def step_impl(context):
     assert context.m[0, 0] == 1
@@ -163,3 +168,14 @@ def step_impl(context):
 @then('identity_matrix * a = a')
 def step_impl(context):
     assert IdentityMatrix * context.a == context.a
+
+
+@then('a.transpose() is the following matrix')
+def step_impl(context):
+    values = context.table.headings + list(itertools.chain(*context.table.rows))
+    assert context.a.transpose() == Matrix(4, 4, values=list(map(float, values)))
+
+
+@then('a = identity_matrix')
+def step_impl(context):
+    assert context.a == IdentityMatrix
