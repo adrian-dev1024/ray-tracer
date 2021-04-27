@@ -7,12 +7,13 @@
 # STEPS:
 # ----------------------------------------------------------------------------
 import itertools
-
-from behave import given, then, when
+from decimal import Decimal, getcontext, localcontext, ROUND_UP, ROUND_05UP
+from behave import given, then
 
 from src.coordinates import Coordinate
 from src.matrix import Matrix, IdentityMatrix
 
+# getcontext().prec = 6
 
 @given('the following 4x4 Matrix m')
 def step_impl(context):
@@ -69,6 +70,33 @@ def step_impl(context):
 @given('a ← identity_matrix.transpose()')
 def step_impl(context):
     context.a = IdentityMatrix.transpose()
+
+
+@given('the following 2x2 Matrix a')
+def step_impl(context):
+    values = context.table.headings + list(itertools.chain(*context.table.rows))
+    context.a = Matrix(2, 2, values=list(map(float, values)))
+
+
+@given('the following 3x3 Matrix a')
+def step_impl(context):
+    values = context.table.headings + list(itertools.chain(*context.table.rows))
+    context.a = Matrix(3, 3, values=list(map(float, values)))
+
+
+@given('b ← a.sub_matrix(1, 0)')
+def step_impl(context):
+    context.b = context.a.sub_matrix(1, 0)
+
+
+@given('b ← a.inverse()')
+def step_impl(context):
+    context.b = context.a.inverse()
+
+
+@given('c ← a * b')
+def step_impl(context):
+    context.c = context.a * context.b
 
 
 @then('m[0,0] = 1')
@@ -179,3 +207,155 @@ def step_impl(context):
 @then('a = identity_matrix')
 def step_impl(context):
     assert context.a == IdentityMatrix
+
+
+@then('a.determinant() = 17')
+def step_impl(context):
+    assert context.a.determinant() == 17
+
+
+@then('a.sub_matrix(0, 2) is the following 2x2 matrix')
+def step_impl(context):
+    values = context.table.headings + list(itertools.chain(*context.table.rows))
+    assert context.a.sub_matrix(0, 2) == Matrix(2, 2, values=list(map(float, values)))
+
+
+@then('a.sub_matrix(2, 1) is the following 3x3 matrix')
+def step_impl(context):
+    values = context.table.headings + list(itertools.chain(*context.table.rows))
+    assert context.a.sub_matrix(2, 1) == Matrix(3, 3, values=list(map(float, values)))
+
+
+@then('b.determinant() = 25')
+def step_impl(context):
+    assert context.b.determinant() == 25
+
+
+@then('a.minor(1, 0) = 25')
+def step_impl(context):
+    assert context.a.minor(1, 0) == 25
+
+
+@then('a.minor(0, 0) = -12')
+def step_impl(context):
+    assert context.a.minor(0, 0) == -12
+
+
+@then('a.cofactor(0, 0) = -12')
+def step_impl(context):
+    assert context.a.cofactor(0, 0) == -12
+
+
+@then('a.cofactor(1, 0) = -25')
+def step_impl(context):
+    assert context.a.cofactor(1, 0) == -25
+
+
+@then('a.cofactor(0, 0) = 56')
+def step_impl(context):
+    assert context.a.cofactor(0, 0) == 56
+
+
+@then('a.cofactor(0, 1) = 12')
+def step_impl(context):
+    assert context.a.cofactor(0, 1) == 12
+
+
+@then('a.cofactor(0, 2) = -46')
+def step_impl(context):
+    assert context.a.cofactor(0, 2) == -46
+
+
+@then('a.determinant() = -196')
+def step_impl(context):
+    assert context.a.determinant() == -196
+
+
+@then('a.cofactor(0, 0) = 690')
+def step_impl(context):
+    assert context.a.cofactor(0, 0) == 690
+
+
+@then('a.cofactor(0, 1) = 447')
+def step_impl(context):
+    assert context.a.cofactor(0, 1) == 447
+
+
+@then('a.cofactor(0, 2) = 210')
+def step_impl(context):
+    assert context.a.cofactor(0, 2) == 210
+
+
+@then('a.cofactor(0, 3) = 51')
+def step_impl(context):
+    assert context.a.cofactor(0, 3) == 51
+
+
+@then('a.determinant() = -4071')
+def step_impl(context):
+    assert context.a.determinant() == -4071
+
+
+@then('a.determinant() = -2120')
+def step_impl(context):
+    assert context.a.determinant() == -2120
+
+
+@then('a is invertible')
+def step_impl(context):
+    assert context.a.invertible()
+
+
+@then('a.determinant() = 0')
+def step_impl(context):
+    assert context.a.determinant() == 0
+
+
+@then('a is not invertible')
+def step_impl(context):
+    assert not context.a.invertible()
+
+
+@then('a.determinant() = 532')
+def step_impl(context):
+    assert context.a.determinant() == 532, f'{context.a.determinant()} != 532'
+
+
+@then('a.cofactor(2, 3) = -160')
+def step_impl(context):
+    assert context.a.cofactor(2, 3) == -160
+
+
+@then('b[3,2] = -160/532')
+def step_impl(context):
+    assert context.b[3, 2] == 1 * Decimal(-160 / 532)
+
+
+@then('a.cofactor(3, 2) = 105')
+def step_impl(context):
+    assert context.a.cofactor(3, 2) == 105
+
+
+@then('b[2,3] = 105/532')
+def step_impl(context):
+    assert context.b[2, 3] == 1 * Decimal(105 / 532)
+
+
+@then('b is the following 4x4 Matrix')
+def step_impl(context):
+    values = context.table.headings + list(itertools.chain(*context.table.rows))
+    assert context.b == Matrix(4, 4, values=list(map(Decimal, values)))
+
+
+@then('a.inverse() is the following 4x4 Matrix')
+def step_impl(context):
+    values = context.table.headings + list(itertools.chain(*context.table.rows))
+    assert context.a.inverse() == Matrix(4, 4, values=list(map(Decimal, values)))
+
+@then('c * inverse(b) = a')
+def step_impl(context):
+    a = context.c * context.b.inverse()
+    for r in range(a.row_num):
+        for c in range(a.col_num):
+            a[r, c] = round(a[r, c])
+    assert a == context.a
