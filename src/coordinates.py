@@ -89,6 +89,7 @@ class Coordinate:
             self.w / scalar
         ).__convert()
 
+
 @dataclass
 class Point(Coordinate):
     w: float = 1.
