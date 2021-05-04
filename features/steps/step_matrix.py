@@ -67,9 +67,14 @@ def step_impl(context):
     context.a = Coordinate(1, 2, 3, 4)
 
 
-@given('a ← identity_matrix.transpose()')
+@given('a ← identity_matrix of "{size}"')
+def step_impl(context, size):
+    context.a = IdentityMatrix(int(size))
+
+
+@given('b ← a.transpose()')
 def step_impl(context):
-    context.a = IdentityMatrix.transpose()
+    context.b = context.a.transpose()
 
 
 @given('the following 2x2 Matrix a')
@@ -89,14 +94,26 @@ def step_impl(context):
     context.b = context.a.sub_matrix(1, 0)
 
 
-@given('b ← a.inverse()')
+@given('b ← a.inverse() identity_matrix')
 def step_impl(context):
     context.b = context.a.inverse()
 
 
+@given('b ← a.inverse()')
+def step_impl(context):
+    context.b = context.a.inverse()
+
 @given('c ← a * b')
 def step_impl(context):
     context.c = context.a * context.b
+
+@given('identity_matrix of size 4x4')
+def step_impl(context):
+    context.identity_matrix = IdentityMatrix(4)
+
+@given('inverse ← a.inverse()')
+def step_impl(context):
+    context.inverse = context.a.inverse()
 
 
 @then('m[0,0] = 1')
@@ -161,8 +178,6 @@ def step_impl(context):
 
 @then('a = b')
 def step_impl(context):
-    a = context.a
-    b = context.b
     assert context.a.__eq__(context.b)
 
 
@@ -190,12 +205,12 @@ def step_impl(context):
 
 @then('a * identity_matrix = a')
 def step_impl(context):
-    assert context.a * IdentityMatrix == context.a
+    assert context.a * context.identity_matrix == context.a
 
 
 @then('identity_matrix * a = a')
 def step_impl(context):
-    assert IdentityMatrix * context.a == context.a
+    assert context.identity_matrix * context.a == context.a
 
 
 @then('a.transpose() is the following matrix')
