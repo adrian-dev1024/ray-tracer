@@ -46,8 +46,6 @@ class Matrix(object):
         self.__matrix[row][col] = Decimal(value)
 
     def __eq__(self, other):
-        t = self.__matrix == other.__matrix
-        t1 = self[0, 0] == other[0, 0]
         if isinstance(other, Matrix):
             return self.__row_num == other.__row_num \
                    and self.__col_num == other.__col_num \
@@ -55,7 +53,7 @@ class Matrix(object):
         return False
 
     def __mul__(self, other):
-        if isinstance(other, _IdentityMatrix):
+        if isinstance(other, IdentityMatrix):
             return self
         if isinstance(other, Coordinate):
             res = self * Matrix(4, 1, [other.x, other.y, other.z, other.x])
@@ -122,15 +120,13 @@ class Matrix(object):
         return inverse_matrix
 
 
-class _IdentityMatrix(object):
+class IdentityMatrix(Matrix):
     _instance = None
 
-    def __new__(cls):
-        if cls._instance is None:
-            print('Creating the object')
-            cls._instance = super(_IdentityMatrix, cls).__new__(cls)
-
-        return cls._instance
+    def __init__(self, size):
+        super(IdentityMatrix, self).__init__(size, size)
+        for i in range(size):
+            self[i, i] = 1
 
     def __mul__(self, other):
         if isinstance(other, Coordinate) or isinstance(other, Matrix):
@@ -140,7 +136,3 @@ class _IdentityMatrix(object):
 
     def transpose(self):
         return self
-
-
-# Singleton
-IdentityMatrix = _IdentityMatrix()

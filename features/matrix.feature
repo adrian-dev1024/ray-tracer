@@ -102,10 +102,12 @@ Feature: Matrices
       | 1 | 2 | 4  | 8  |
       | 2 | 4 | 8  | 16 |
       | 4 | 8 | 16 | 32 |
+    Given identity_matrix of size 4x4
     Then a * identity_matrix = a
 
   Scenario: Multiplying the identity matrix by a tuple
     Given a ← Coordinate(1, 2, 3, 4)
+    Given identity_matrix of size 4x4
     Then identity_matrix * a = a
 
   Scenario: Transposing a matrix
@@ -120,9 +122,15 @@ Feature: Matrices
       | 3 | 0 | 5 | 5 |
       | 0 | 8 | 3 | 8 |
 
-  Scenario: Transposing the identity matrix
-    Given a ← identity_matrix.transpose()
-    Then a = identity_matrix
+  Scenario Outline: Transposing the identity matrix
+    Given a ← identity_matrix of "<size>"
+    And b ← a.transpose()
+    Then a = b
+    Examples:
+      | size |
+      | 2    |
+      | 3    |
+      | 4    |
 
   Scenario: Calculating the determinant of a 2x2 matrix
     Given the following 2x2 Matrix a:
@@ -253,14 +261,23 @@ Feature: Matrices
 
   Scenario: Multiplying a product by its inverse
     Given the following 4x4 Matrix a:
-      |  3 | -9 |  7 |  3 |
-      |  3 | -8 |  2 | -9 |
-      | -4 |  4 |  4 |  1 |
-      | -6 |  5 | -1 |  1 |
+      | 3  | -9 | 7  | 3  |
+      | 3  | -8 | 2  | -9 |
+      | -4 | 4  | 4  | 1  |
+      | -6 | 5  | -1 | 1  |
     And the following 4x4 Matrix b:
-      |  8 |  2 |  2 |  2 |
-      |  3 | -1 |  7 |  0 |
-      |  7 |  0 |  5 |  4 |
-      |  6 | -2 |  0 |  5 |
+      | 8 | 2  | 2 | 2 |
+      | 3 | -1 | 7 | 0 |
+      | 7 | 0  | 5 | 4 |
+      | 6 | -2 | 0 | 5 |
     And c ← a * b
     Then c * inverse(b) = a
+
+  Scenario Outline: Invert the identity matrix
+    Given a ← identity_matrix of "<size>"
+    And b ← a.inverse() identity_matrix
+    Then a = b
+    Examples:
+      | size |
+      | 3    |
+      | 4    |
