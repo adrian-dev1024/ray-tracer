@@ -1,7 +1,7 @@
 import logging
 from decimal import Decimal, getcontext
 
-from src.coordinates import Coordinate, convert
+from src.coordinates import Coordinate, convert, Vector
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +56,7 @@ class Matrix(object):
         if isinstance(other, IdentityMatrix):
             return self
         if isinstance(other, Coordinate):
-            res = self * Matrix(4, 1, [other.x, other.y, other.z, other.x])
+            res = self * Matrix(4, 1, [other.x, other.y, other.z, other.w])
             return convert(Coordinate(res[0, 0], res[1, 0], res[2, 0], res[3, 0]))
         elif isinstance(other, Matrix):
             if self.col_num != other.row_num:
@@ -136,3 +136,21 @@ class IdentityMatrix(Matrix):
 
     def transpose(self):
         return self
+
+
+class Translation(Matrix):
+
+    def __init__(self, x, y, z):
+        values = [
+            1, 0, 0, x,
+            0, 1, 0, y,
+            0, 0, 1, z,
+            0, 0, 0, 1
+        ]
+        super(Translation, self).__init__(4, 4, values=values)
+
+    def __mul__(self, other):
+        if isinstance(other, Vector):
+            return other
+        else:
+            return super(Translation, self).__mul__(other)
