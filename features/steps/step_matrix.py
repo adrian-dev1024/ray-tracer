@@ -13,6 +13,7 @@ from behave import given, then
 from src.coordinates import Coordinate
 from src.matrix import Matrix, IdentityMatrix
 
+
 # getcontext().prec = 6
 
 @given('the following 4x4 Matrix m')
@@ -103,13 +104,16 @@ def step_impl(context):
 def step_impl(context):
     context.b = context.a.inverse()
 
+
 @given('c ← a * b')
 def step_impl(context):
     context.c = context.a * context.b
 
+
 @given('identity_matrix of size 4x4')
 def step_impl(context):
     context.identity_matrix = IdentityMatrix(4)
+
 
 @given('inverse ← a.inverse()')
 def step_impl(context):
@@ -366,6 +370,7 @@ def step_impl(context):
 def step_impl(context):
     values = context.table.headings + list(itertools.chain(*context.table.rows))
     assert context.a.inverse() == Matrix(4, 4, values=list(map(Decimal, values)))
+
 
 @then('c * inverse(b) = a')
 def step_impl(context):
