@@ -138,7 +138,7 @@ class IdentityMatrix(Matrix):
         return self
 
 
-class Translation(Matrix):
+class TranslationMatrix(Matrix):
 
     def __init__(self, x, y, z):
         values = [
@@ -147,10 +147,22 @@ class Translation(Matrix):
             0, 0, 1, z,
             0, 0, 0, 1
         ]
-        super(Translation, self).__init__(4, 4, values=values)
+        super(TranslationMatrix, self).__init__(4, 4, values=values)
 
     def __mul__(self, other):
         if isinstance(other, Vector):
             return other
         else:
-            return super(Translation, self).__mul__(other)
+            return super(TranslationMatrix, self).__mul__(other)
+
+
+class ScalingMatrix(Matrix):
+
+    def __init__(self, x, y, z):
+        values = [
+            x, 0, 0, 0,
+            0, y, 0, 0,
+            0, 0, z, 0,
+            0, 0, 0, 1
+        ]
+        super(ScalingMatrix, self).__init__(4, 4, values=values)
