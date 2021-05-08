@@ -31,6 +31,7 @@ Scenario: Vector() creates tuples with w=0
 # STEPS:
 # ----------------------------------------------------------------------------
 import math
+from decimal import Decimal
 
 from behave import given, then, when
 
@@ -179,7 +180,7 @@ def step_impl(context):
 
 @then('b.x = 4.3')
 def step_impl(context):
-    assert context.b.x == 4.3
+    assert context.b.x == Decimal(4.3)
 
 
 @then('b.y = -4.2')
@@ -287,12 +288,12 @@ def step_impl(context):
 
 @then('v.normalize() = Vector(1/√14, 2/√14, 3/√14)')
 def step_impl(context):
-    assert context.v.normalize() == Vector(1 / math.sqrt(14), 2 / math.sqrt(14), 3 / math.sqrt(14))
+    assert context.v.normalize() == Vector(1 / Decimal(math.sqrt(14)), 2 / Decimal(math.sqrt(14)), 3 / Decimal(math.sqrt(14)))
 
 
 @then('norm.magnitude() = 1')
 def step_impl(context):
-    assert context.norm.magnitude() == 1
+    assert context.norm.magnitude().quantize(Decimal(1)) == 1
 
 
 @then('a.dot(b) = 20')

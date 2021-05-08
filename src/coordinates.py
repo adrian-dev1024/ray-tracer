@@ -1,5 +1,6 @@
 import math
 from dataclasses import dataclass
+from decimal import Decimal
 
 
 class CoordinateNotPoint(Exception):
@@ -12,10 +13,16 @@ class CoordinateNotVector(Exception):
 
 @dataclass(eq=False)
 class Coordinate:
-    x: float
-    y: float
-    z: float
-    w: float
+    x: Decimal
+    y: Decimal
+    z: Decimal
+    w: Decimal
+
+    def __post_init__(self):
+        self.x = Decimal(self.x)
+        self.y = Decimal(self.y)
+        self.z = Decimal(self.z)
+        self.w = Decimal(self.w)
 
     def is_a_point(self):
         return self.w == Point.w
@@ -43,10 +50,10 @@ class Coordinate:
     def __eq__(self, other):
         """Overrides the default implementation"""
         if isinstance(other, Coordinate):
-            return self.x == other.x and \
-                   self.y == other.y and \
-                   self.z == other.z and \
-                   self.w == other.w
+            return self.x.quantize(5) == other.x.quantize(5) and \
+                   self.y.quantize(5) == other.y.quantize(5) and \
+                   self.z.quantize(5) == other.z.quantize(5) and \
+                   self.w.quantize(5) == other.w.quantize(5)
         return NotImplemented
 
     # TODO: Not sure what happens when adding a point to a point
@@ -72,7 +79,7 @@ class Coordinate:
         return (Coordinate(0, 0, 0, 0) - self).__convert()
 
     def __mul__(self, other):
-        scalar = float(other)
+        scalar = Decimal(other)
         return Coordinate(
             self.x * scalar,
             self.y * scalar,
@@ -81,7 +88,7 @@ class Coordinate:
         ).__convert()
 
     def __truediv__(self, other):
-        scalar = float(other)
+        scalar = Decimal(other)
         return Coordinate(
             self.x / scalar,
             self.y / scalar,
@@ -90,17 +97,17 @@ class Coordinate:
         ).__convert()
 
 
-@dataclass
+@dataclass(eq=False)
 class Point(Coordinate):
-    w: float = 1.
+    w: Decimal = 1.
 
 
-@dataclass
+@dataclass(eq=False)
 class Vector(Coordinate):
-    w: float = 0.
+    w: Decimal = 0.
 
     def magnitude(self):
-        return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
+        return Decimal(math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2))
 
     def normalize(self):
         magnitude = self.magnitude()
