@@ -1,4 +1,5 @@
 import logging
+import math
 from decimal import Decimal, getcontext
 
 from src.coordinates import Coordinate, convert, Vector
@@ -7,6 +8,10 @@ logger = logging.getLogger(__name__)
 
 
 class MatrixError(Exception):
+    pass
+
+
+class RotationMatrixError(Exception):
     pass
 
 
@@ -166,3 +171,35 @@ class ScalingMatrix(Matrix):
             0, 0, 0, 1
         ]
         super(ScalingMatrix, self).__init__(4, 4, values=values)
+
+
+class RotationMatrix(Matrix):
+
+    def __init__(self, x_radians=None, y_radians=None, z_radians=None):
+        args = [i for i in [x_radians, y_radians, z_radians] if i is not None]
+        if len(args) != 1:
+            raise RotationMatrixError('Exactly one radians kwarg is required.')
+        values = None
+        if x_radians:
+            values = [
+                1, 0, 0, 0,
+                0, math.cos(x_radians), -math.sin(x_radians), 0,
+                0, math.sin(x_radians), math.cos(x_radians), 0,
+                0, 0, 0, 1
+            ]
+        elif y_radians:
+            values = [
+                math.cos(y_radians), 0, math.sin(y_radians), 0,
+                0, 1, 0, 0,
+                -math.sin(y_radians), 0, math.cos(y_radians), 0,
+                0, 0, 0, 1
+            ]
+        elif z_radians:
+            values = [
+                math.cos(z_radians), -math.sin(z_radians), 0, 0,
+                math.sin(z_radians), math.cos(z_radians), 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            ]
+
+        super(RotationMatrix, self).__init__(4, 4, values=values)
