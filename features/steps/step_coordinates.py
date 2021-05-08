@@ -309,7 +309,3 @@ def step_impl(context):
 @then('b.cross(a) = Vector(1, -2, 1)')
 def step_impl(context):
     assert context.b.cross(context.a) == Vector(1, -2, 1)
-
-
-
-

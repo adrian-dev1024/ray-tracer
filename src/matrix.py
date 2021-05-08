@@ -177,7 +177,7 @@ class RotationMatrix(Matrix):
 
     def __init__(self, x_radians=None, y_radians=None, z_radians=None):
         args = [i for i in [x_radians, y_radians, z_radians] if i is not None]
-        if len(args) is not 1:
+        if len(args) != 1:
             raise RotationMatrixError('Exactly one radians kwarg is required.')
         values = None
         if x_radians:

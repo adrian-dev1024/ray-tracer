@@ -130,7 +130,6 @@ def step_impl(context):
     body = '255 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n'
     body += '0 0 0 0 0 0 0 128 0 0 0 0 0 0 0\n'
     body += '0 0 0 0 0 0 0 0 0 0 0 0 0 0 255\n'
-    p = context.ppm
     assert context.ppm.endswith(body)
 
 

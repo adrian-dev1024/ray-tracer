@@ -7,7 +7,8 @@
 # STEPS:
 # ----------------------------------------------------------------------------
 import itertools
-from decimal import Decimal, getcontext, localcontext, ROUND_UP, ROUND_05UP
+from decimal import Decimal
+
 from behave import given, then
 
 from src.coordinates import Coordinate

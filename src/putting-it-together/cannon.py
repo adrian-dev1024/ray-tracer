@@ -11,6 +11,7 @@ from src.coordinates import Point, Vector
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 @dataclass
 class Environment:
     gravity: Vector
@@ -34,7 +35,7 @@ def plot(canvas: Canvas, position: Point):
     try:
         canvas.write_pixel(round(position.x), round(canvas.height - position.y), color)
         logger.info(f'Plotted x: {round(position.x)}, y: {round(position.y)} => {round(position.y - canvas.height)}')
-    except IndexError as e:
+    except IndexError:
         logger.error(f'Could not plot x: {round(position.x)}, y: {round(position.y - canvas.height)}')
 
 

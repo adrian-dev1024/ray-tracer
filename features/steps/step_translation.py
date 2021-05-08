@@ -167,9 +167,6 @@ def step_impl(context):
 
 @then('half_quarter * p = Point(-√2/2, √2/2, 0)')
 def step_impl(context):
-    hq = context.half_quarter
-    p = context.p
-    r = hq * p
     assert context.half_quarter * context.p == Point(Decimal(-math.sqrt(2)) / 2, Decimal(math.sqrt(2)) / 2, 0)
 
 
