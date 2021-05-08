@@ -203,3 +203,15 @@ class RotationMatrix(Matrix):
             ]
 
         super(RotationMatrix, self).__init__(4, 4, values=values)
+
+
+class ShearingMatrix(Matrix):
+
+    def __init__(self, x_y=0, x_z=0, y_x=0, y_z=0, z_x=0, z_y=0):
+        values = [
+            1, x_y, x_z, 0,
+            y_x, 1, y_z, 0,
+            z_x, z_y, 1, 0,
+            0, 0, 0, 1
+        ]
+        super(ShearingMatrix, self).__init__(4, 4, values=values)
