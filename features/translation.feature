@@ -63,3 +63,20 @@ Feature: Matrix Transformations
     And full_quarter ← RotationMatrix(z_radians=π / 2)
     Then half_quarter * p = Point(-√2/2, √2/2, 0)
     And full_quarter * p = Point(-1, 0, 0)
+
+  Scenario: Individual transformations are applied in sequence
+    Given p ← Point(1, 0, 1)
+  # apply rotation first
+    When p2 ← p.rotate(x_radians=π / 2)
+    Then p2 = Point(1, -1, 0)
+  # then apply scaling
+    When p3 ← p2.scale(5, 5, 5)
+    Then p3 = Point(5, -5, 0)
+  # then apply translation
+    When p4 ← p3.translate(10, 5, 7)
+    Then p4 = Point(15, 0, 7)
+
+  Scenario: Chained transformations
+    Given p ← Point(1, 0, 1)
+    When p2 ← p.rotate(x_radians=π / 2).scale(5, 5, 5).translate(10, 5, 7)
+    Then p2 = Point(15, 0, 7)

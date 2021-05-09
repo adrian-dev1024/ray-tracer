@@ -1,7 +1,7 @@
-Feature: coordinates
+Feature: Scalars
 
-  Scenario: A Coordinate with w=1.0 is a point
-    Given a ← Coordinate(4.3, -4.2, 3.1, 1.0)
+  Scenario: A Scalar with w=1.0 is a point
+    Given a ← Scalar(4.3, -4.2, 3.1, 1.0)
     Then a.x = 4.3
     And a.y = -4.2
     And a.z = 3.1
@@ -9,8 +9,8 @@ Feature: coordinates
     And a is a point
     And a is not a vector
 
-  Scenario: A Coordinate with w=0 is a vector
-    Given b ← Coordinate(4.3, -4.2, 3.1, 0.0)
+  Scenario: A Scalar with w=0 is a vector
+    Given b ← Scalar(4.3, -4.2, 3.1, 0.0)
     Then b.x = 4.3
     And b.y = -4.2
     And b.z = 3.1
@@ -20,16 +20,16 @@ Feature: coordinates
 
   Scenario: Point() creates tuples with w=1
     Given p ← Point(4, -4, 3)
-    Then p = Coordinate(4, -4, 3, 1)
+    Then p = Scalar(4, -4, 3, 1)
 
   Scenario: Vector() creates tuples with w=0
     Given v ← Vector(4, -4, 3)
-    Then v = Coordinate(4, -4, 3, 0)
+    Then v = Scalar(4, -4, 3, 0)
 
   Scenario: Adding two tuples
-    Given a1 ← Coordinate(3, -2, 5, 1)
-    And a2 ← Coordinate(-2, 3, 1, 0)
-    Then a1 + a2 = Coordinate(1, 1, 6, 1)
+    Given a1 ← Scalar(3, -2, 5, 1)
+    And a2 ← Scalar(-2, 3, 1, 0)
+    Then a1 + a2 = Scalar(1, 1, 6, 1)
 
   Scenario: Subtracting two points
     Given p1 ← Point(3, 2, 1)
@@ -52,20 +52,20 @@ Feature: coordinates
     Then zero - v = Vector(-1, 2, -3)
 
   Scenario: Negating a tuple
-    Given a ← Coordinate(1, -2, 3, -4)
-    Then -a = Coordinate(-1, 2, -3, 4)
+    Given a ← Scalar(1, -2, 3, -4)
+    Then -a = Scalar(-1, 2, -3, 4)
 
-  Scenario: Multiplying a Coordinate by a scalar
-    Given a ← Coordinate(1, -2, 3, -4)
-    Then a * 3.5 = Coordinate(3.5, -7, 10.5, -14)
+  Scenario: Multiplying a Scalar by a scalar
+    Given a ← Scalar(1, -2, 3, -4)
+    Then a * 3.5 = Scalar(3.5, -7, 10.5, -14)
 
-  Scenario: Multiplying a Coordinate by a fraction
-    Given a ← Coordinate(1, -2, 3, -4)
-    Then a * 0.5 = Coordinate(0.5, -1, 1.5, -2)
+  Scenario: Multiplying a Scalar by a fraction
+    Given a ← Scalar(1, -2, 3, -4)
+    Then a * 0.5 = Scalar(0.5, -1, 1.5, -2)
 
-  Scenario: Dividing a Coordinate by a scalar
-    Given a ← Coordinate(1, -2, 3, -4)
-    Then a / 2 = Coordinate(0.5, -1, 1.5, -2)
+  Scenario: Dividing a Scalar by a scalar
+    Given a ← Scalar(1, -2, 3, -4)
+    Then a / 2 = Scalar(0.5, -1, 1.5, -2)
 
   Scenario: Computing the magnitude of Vector(1, 0, 0)
     Given v ← Vector(1, 0, 0)

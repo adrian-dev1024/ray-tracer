@@ -11,8 +11,7 @@ from decimal import Decimal
 
 from behave import given, then
 
-from src.coordinates import Coordinate
-from src.matrix import Matrix, IdentityMatrix
+from src.matrix import Matrix, IdentityMatrix, Scalar
 
 
 # getcontext().prec = 6
@@ -59,14 +58,14 @@ def step_impl(context):
     context.b = Matrix(3, 2, values=list(map(float, values)))
 
 
-@given('b ← Coordinate(1, 2, 3, 1)')
+@given('b ← Scalar(1, 2, 3, 1)')
 def step_impl(context):
-    context.b = Coordinate(1, 2, 3, 1)
+    context.b = Scalar(1, 2, 3, 1)
 
 
-@given('a ← Coordinate(1, 2, 3, 4)')
+@given('a ← Scalar(1, 2, 3, 4)')
 def step_impl(context):
-    context.a = Coordinate(1, 2, 3, 4)
+    context.a = Scalar(1, 2, 3, 4)
 
 
 @given('a ← identity_matrix of "{size}"')
@@ -203,9 +202,9 @@ def step_impl(context):
     assert context.a * context.b == Matrix(2, 2, values=list(map(float, values)))
 
 
-@then('a * b = Coordinate(18, 24, 33, 1)')
+@then('a * b = Scalar(18, 24, 33, 1)')
 def step_impl(context):
-    assert context.a * context.b == Coordinate(18, 24, 33, 1)
+    assert context.a * context.b == Scalar(18, 24, 33, 1)
 
 
 @then('a * identity_matrix = a')

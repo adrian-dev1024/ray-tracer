@@ -2,8 +2,6 @@ import logging
 import math
 from decimal import Decimal, getcontext
 
-from src.coordinates import Coordinate, convert, Vector
-
 logger = logging.getLogger(__name__)
 
 
@@ -15,6 +13,14 @@ class RotationMatrixError(Exception):
     pass
 
 
+class ScalarNotPoint(Exception):
+    pass
+
+
+class ScalarNotVector(Exception):
+    pass
+
+
 class Matrix(object):
 
     def __init__(self, row_num, col_num, values=None, default_value=Decimal(0)):
@@ -23,10 +29,9 @@ class Matrix(object):
         if values is None:
             self.__matrix = [[default_value for _ in range(self.__col_num)] for _ in range(self.__row_num)]
         else:
-
             if len(values) > self.__row_num * self.__col_num:
                 logger.warning(
-                    f'values list exceeds size {len(values)} of Matrix size {self.__row_num * self.__col_num}. '
+                    f'values list size {len(values)} exceeds size of Matrix {self.__row_num * self.__col_num}. '
                     f'Skipping {values[self.__row_num * self.__col_num::]}')
             elif len(values) < self.__row_num * self.__col_num:
                 values += [Decimal(default_value) for _ in range(self.__row_num * self.__col_num - len(values))]
@@ -60,9 +65,6 @@ class Matrix(object):
     def __mul__(self, other):
         if isinstance(other, IdentityMatrix):
             return self
-        if isinstance(other, Coordinate):
-            res = self * Matrix(4, 1, [other.x, other.y, other.z, other.w])
-            return convert(Coordinate(res[0, 0], res[1, 0], res[2, 0], res[3, 0]))
         elif isinstance(other, Matrix):
             if self.col_num != other.row_num:
                 raise MatrixError('Right Matrix\'s column number must equal left Matrix\'s row number')
@@ -73,9 +75,11 @@ class Matrix(object):
                     for n in range(self.col_num):
                         v += self[m, n] * other[n, p]
                     values.append(v)
+            if isinstance(other, Scalar):
+                return convert(Scalar(*values))
             return Matrix(self.row_num, other.col_num, values)
         else:
-            raise MatrixError('Can only multiply by Coordinate or Matrix')
+            raise MatrixError('Can only multiply by Scalar or Matrix')
 
     def transpose(self):
         values = []
@@ -124,6 +128,151 @@ class Matrix(object):
 
         return inverse_matrix
 
+    # Transformations
+    def translate(self, x, y, z):
+        return TranslationMatrix(x, y, z) * self
+
+    def scale(self, x, y, z):
+        return ScalingMatrix(x, y, z) * self
+
+    def rotate(self,  x_radians=None, y_radians=None, z_radians=None):
+        return RotationMatrix(x_radians=x_radians, y_radians=y_radians, z_radians=z_radians) * self
+
+
+class Scalar(Matrix):
+
+    def __init__(self, x, y, z, w):
+        super(Scalar, self).__init__(4, 1, [x, y, z, w])
+
+    @property
+    def x(self):
+        return self[0, 0]
+
+    @property
+    def y(self):
+        return self[1, 0]
+
+    @property
+    def z(self):
+        return self[2, 0]
+
+    @property
+    def w(self):
+        return self[3, 0]
+
+    def is_a_point(self):
+        return self.w == Point.w
+
+    def is_a_vector(self):
+        return self.w == Vector.w
+
+    def __to_point(self):
+        if self.is_a_point():
+            return Point(self.x, self.y, self.z)
+        raise ScalarNotPoint()
+
+    def __to_vector(self):
+        if self.is_a_point():
+            return Vector(self.x, self.y, self.z)
+        raise ScalarNotVector()
+
+    def __convert(self):
+        if self.is_a_point():
+            return Point(self.x, self.y, self.z)
+        elif self.is_a_vector():
+            return Vector(self.x, self.y, self.z)
+        return self
+
+    def __eq__(self, other):
+        if isinstance(other, Scalar):
+            return self.x.quantize(5) == other.x.quantize(5) and \
+                   self.y.quantize(5) == other.y.quantize(5) and \
+                   self.z.quantize(5) == other.z.quantize(5) and \
+                   self.w.quantize(5) == other.w.quantize(5)
+        return NotImplemented
+
+    # TODO: Not sure what happens when adding a point to a point
+    def __add__(self, other):
+        return Scalar(
+            self.x + other.x,
+            self.y + other.y,
+            self.z + other.z,
+            self.w + other.w
+        ).__convert()
+
+    # TODO: Only works for 2 point to get a vector
+    def __sub__(self, other):
+        return Scalar(
+            self.x - other.x,
+            self.y - other.y,
+            self.z - other.z,
+            self.w - other.w
+        ).__convert()
+
+    def __neg__(self):
+        return (Scalar(0, 0, 0, 0) - self).__convert()
+
+    def __mul__(self, other):
+        scalar = Decimal(other)
+        return Scalar(
+            self.x * scalar,
+            self.y * scalar,
+            self.z * scalar,
+            self.w * scalar
+        ).__convert()
+
+    def __truediv__(self, other):
+        scalar = Decimal(other)
+        return Scalar(
+            self.x / scalar,
+            self.y / scalar,
+            self.z / scalar,
+            self.w / scalar
+        ).__convert()
+
+
+class Point(Scalar):
+    w: Decimal = Decimal(1)
+
+    def __init__(self, x, y, z):
+        super(Point, self).__init__(x, y, z, self.w)
+
+
+class Vector(Scalar):
+    w: Decimal = Decimal(0)
+
+    def __init__(self, x, y, z):
+        super(Vector, self).__init__(x, y, z, self.w)
+
+    def magnitude(self):
+        return Decimal(math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2))
+
+    def normalize(self):
+        magnitude = self.magnitude()
+        return Vector(
+            self.x / magnitude,
+            self.y / magnitude,
+            self.z / magnitude
+        )
+
+    def dot(self, other):
+        return self.x * other.x + self.y * other.y + self.z * other.z
+
+    def cross(self, other):
+        return Vector(
+            self.y * other.z - self.z * other.y,
+            self.z * other.x - self.x * other.z,
+            self.x * other.y - self.y * other.x
+        )
+
+
+def convert(coordinate: Scalar):
+    if coordinate.is_a_point():
+        return Point(coordinate.x, coordinate.y, coordinate.z)
+    elif coordinate.is_a_vector():
+        return Vector(coordinate.x, coordinate.y, coordinate.z)
+    return coordinate
+
 
 class IdentityMatrix(Matrix):
     _instance = None
@@ -134,10 +283,10 @@ class IdentityMatrix(Matrix):
             self[i, i] = 1
 
     def __mul__(self, other):
-        if isinstance(other, Coordinate) or isinstance(other, Matrix):
+        if isinstance(other, Scalar) or isinstance(other, Matrix):
             return other
         else:
-            raise MatrixError('Can only multiply by Coordinate or Matrix')
+            raise MatrixError('Can only multiply by Scalar or Matrix')
 
     def transpose(self):
         return self

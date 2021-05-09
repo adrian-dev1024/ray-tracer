@@ -93,8 +93,8 @@ Feature: Matrices
       | 2 | 4 | 4 | 2 |
       | 8 | 6 | 4 | 1 |
       | 0 | 0 | 0 | 1 |
-    And b ← Coordinate(1, 2, 3, 1)
-    Then a * b = Coordinate(18, 24, 33, 1)
+    And b ← Scalar(1, 2, 3, 1)
+    Then a * b = Scalar(18, 24, 33, 1)
 
   Scenario: Multiplying a matrix by the identity matrix
     Given the following 4x4 Matrix a:
@@ -106,7 +106,7 @@ Feature: Matrices
     Then a * identity_matrix = a
 
   Scenario: Multiplying the identity matrix by a tuple
-    Given a ← Coordinate(1, 2, 3, 4)
+    Given a ← Scalar(1, 2, 3, 4)
     Given identity_matrix of size 4x4
     Then identity_matrix * a = a
 
