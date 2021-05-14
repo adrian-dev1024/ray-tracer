@@ -80,3 +80,32 @@ Feature: Matrix Transformations
     Given p ← Point(1, 0, 1)
     When p2 ← p.rotate(x_radians=π / 2).scale(5, 5, 5).translate(10, 5, 7)
     Then p2 = Point(15, 0, 7)
+  Scenario: A shearing transformation moves x in proportion to y
+    Given transform ← ShearingMatrix(x_y=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(5, 3, 4)
+
+  Scenario: A shearing transformation moves x in proportion to z
+    Given transform ← ShearingMatrix(x_z=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(6, 3, 4)
+
+  Scenario: A shearing transformation moves y in proportion to x
+    Given transform ← ShearingMatrix(y_x=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(2, 5, 4)
+
+  Scenario: A shearing transformation moves y in proportion to z
+    Given transform ← ShearingMatrix(y_z=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(2, 7, 4)
+
+  Scenario: A shearing transformation moves z in proportion to x
+    Given transform ← ShearingMatrix(z_x=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(2, 3, 6)
+
+  Scenario: A shearing transformation moves z in proportion to y
+    Given transform ← ShearingMatrix(z_y=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(2, 3, 7)

@@ -138,6 +138,9 @@ class Matrix(object):
     def rotate(self,  x_radians=None, y_radians=None, z_radians=None):
         return RotationMatrix(x_radians=x_radians, y_radians=y_radians, z_radians=z_radians) * self
 
+    def shear(self,  x_y=0, x_z=0, y_x=0, y_z=0, z_x=0, z_y=0):
+        return ShearingMatrix(x_y=x_y, x_z=x_z, y_x=y_x, y_z=y_z, z_x=z_x, z_y=z_y) * self
+
 
 class Scalar(Matrix):
 
@@ -352,3 +355,15 @@ class RotationMatrix(Matrix):
             ]
 
         super(RotationMatrix, self).__init__(4, 4, values=values)
+
+
+class ShearingMatrix(Matrix):
+
+    def __init__(self, x_y=0, x_z=0, y_x=0, y_z=0, z_x=0, z_y=0):
+        values = [
+            1, x_y, x_z, 0,
+            y_x, 1, y_z, 0,
+            z_x, z_y, 1, 0,
+            0, 0, 0, 1
+        ]
+        super(ShearingMatrix, self).__init__(4, 4, values=values)
