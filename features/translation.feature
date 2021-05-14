@@ -63,3 +63,33 @@ Feature: Matrix Transformations
     And full_quarter ← RotationMatrix(z_radians=π / 2)
     Then half_quarter * p = Point(-√2/2, √2/2, 0)
     And full_quarter * p = Point(-1, 0, 0)
+
+  Scenario: A shearing transformation moves x in proportion to y
+    Given transform ← ShearingMatrix(x_y=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(5, 3, 4)
+
+  Scenario: A shearing transformation moves x in proportion to z
+    Given transform ← ShearingMatrix(x_z=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(6, 3, 4)
+
+  Scenario: A shearing transformation moves y in proportion to x
+    Given transform ← ShearingMatrix(y_x=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(2, 5, 4)
+
+  Scenario: A shearing transformation moves y in proportion to z
+    Given transform ← ShearingMatrix(y_z=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(2, 7, 4)
+
+  Scenario: A shearing transformation moves z in proportion to x
+    Given transform ← ShearingMatrix(z_x=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(2, 3, 6)
+
+  Scenario: A shearing transformation moves z in proportion to y
+    Given transform ← ShearingMatrix(z_y=1)
+    And p ← Point(2, 3, 4)
+    Then transform * p = Point(2, 3, 7)

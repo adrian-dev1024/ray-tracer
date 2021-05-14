@@ -12,7 +12,7 @@ from behave import given, then
 import math
 
 from src.coordinates import Point, Vector
-from src.matrix import TranslationMatrix, ScalingMatrix, RotationMatrix
+from src.matrix import TranslationMatrix, ScalingMatrix, RotationMatrix, ShearingMatrix
 
 
 @given('transform ← TranslationMatrix(5, -3, 2)')
@@ -105,6 +105,36 @@ def step_impl(context):
     context.full_quarter = RotationMatrix(z_radians=Decimal(math.pi) / 2)
 
 
+@given('transform ← ShearingMatrix(x_y=1)')
+def step_impl(context):
+    context.transform = ShearingMatrix(x_y=1)
+
+
+@given('transform ← ShearingMatrix(x_z=1)')
+def step_impl(context):
+    context.transform = ShearingMatrix(x_z=1)
+
+
+@given('transform ← ShearingMatrix(y_x=1)')
+def step_impl(context):
+    context.transform = ShearingMatrix(y_x=1)
+
+
+@given('transform ← ShearingMatrix(y_z=1)')
+def step_impl(context):
+    context.transform = ShearingMatrix(y_z=1)
+
+
+@given('transform ← ShearingMatrix(z_x=1)')
+def step_impl(context):
+    context.transform = ShearingMatrix(z_x=1)
+
+
+@given('transform ← ShearingMatrix(z_y=1)')
+def step_impl(context):
+    context.transform = ShearingMatrix(z_y=1)
+
+
 @then('transform * p = Point(2, 1, 7)')
 def step_impl(context):
     assert context.transform * context.p == Point(2, 1, 7)
@@ -173,3 +203,33 @@ def step_impl(context):
 @then('full_quarter * p = Point(-1, 0, 0)')
 def step_impl(context):
     assert context.full_quarter * context.p == Point(-1, 0, 0)
+
+
+@then('transform * p = Point(5, 3, 4)')
+def step_impl(context):
+    assert context.transform * context.p == Point(5, 3, 4)
+
+
+@then('transform * p = Point(6, 3, 4)')
+def step_impl(context):
+    assert context.transform * context.p == Point(6, 3, 4)
+
+
+@then('transform * p = Point(2, 5, 4)')
+def step_impl(context):
+    assert context.transform * context.p == Point(2, 5, 4)
+
+
+@then('transform * p = Point(2, 7, 4)')
+def step_impl(context):
+    assert context.transform * context.p == Point(2, 7, 4)
+
+
+@then('transform * p = Point(2, 3, 6)')
+def step_impl(context):
+    assert context.transform * context.p == Point(2, 3, 6)
+
+
+@then('transform * p = Point(2, 3, 7)')
+def step_impl(context):
+    assert context.transform * context.p == Point(2, 3, 7)
