@@ -8,11 +8,10 @@
 # ----------------------------------------------------------------------------
 from decimal import Decimal
 
-from behave import given, then
+from behave import given, then, when
 import math
 
-from src.coordinates import Point, Vector
-from src.matrix import TranslationMatrix, ScalingMatrix, RotationMatrix, ShearingMatrix
+from src.matrix import TranslationMatrix, ScalingMatrix, RotationMatrix, ShearingMatrix, Point, Vector
 
 
 @given('transform ← TranslationMatrix(5, -3, 2)')
@@ -103,6 +102,31 @@ def step_impl(context):
 @given('full_quarter ← RotationMatrix(z_radians=π / 2)')
 def step_impl(context):
     context.full_quarter = RotationMatrix(z_radians=Decimal(math.pi) / 2)
+
+
+@given('p ← Point(1, 0, 1)')
+def step_impl(context):
+    context.p = Point(1, 0, 1)
+
+
+@when('p2 ← p.rotate(x_radians=π / 2)')
+def step_impl(context):
+    context.p2 = context.p.rotate(x_radians=Decimal(math.pi) / 2)
+
+
+@when('p3 ← p2.scale(5, 5, 5)')
+def step_impl(context):
+    context.p3 = context.p2.scale(5, 5, 5)
+
+
+@when('p4 ← p3.translate(10, 5, 7)')
+def step_impl(context):
+    context.p4 = context.p3.translate(10, 5, 7)
+
+
+@when('p2 ← p.rotate(x_radians=π / 2).scale(5, 5, 5).translate(10, 5, 7)')
+def step_impl(context):
+    context.p2 = context.p.rotate(x_radians=Decimal(math.pi) / 2).scale(5, 5, 5).translate(10, 5, 7)
 
 
 @given('transform ← ShearingMatrix(x_y=1)')
@@ -203,6 +227,26 @@ def step_impl(context):
 @then('full_quarter * p = Point(-1, 0, 0)')
 def step_impl(context):
     assert context.full_quarter * context.p == Point(-1, 0, 0)
+
+
+@then('p2 = Point(1, -1, 0)')
+def step_impl(context):
+    assert context.p2 == Point(1, -1, 0)
+
+
+@then('p3 = Point(5, -5, 0)')
+def step_impl(context):
+    assert context.p3 == Point(5, -5, 0)
+
+
+@then('p4 = Point(15, 0, 7)')
+def step_impl(context):
+    assert context.p4 == Point(15, 0, 7)
+
+
+@then('p2 = Point(15, 0, 7)')
+def step_impl(context):
+    assert context.p2 == Point(15, 0, 7)
 
 
 @then('transform * p = Point(5, 3, 4)')

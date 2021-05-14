@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from src.canvas import Canvas
 from src.color import Color
-from src.coordinates import Point, Vector
+from src.matrix import Point, Vector
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
