@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from src.intersection import Intersection, Intersections
 from src.matrix import Point
 from src.ray import Ray
 
@@ -19,4 +20,4 @@ class Sphere:
         t_1 = (-b - discriminant.sqrt()) / (2 * a)
         t_2 = (-b + discriminant.sqrt()) / (2 * a)
 
-        return [t_1, t_2]
+        return Intersections(Intersection(t_1, self), Intersection(t_2, self))

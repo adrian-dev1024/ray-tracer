@@ -59,41 +59,51 @@ def step_impl(context):
     assert len(context.xs) == 0
 
 
-@then('xs[0] = 4.0')
+@then('xs[0].t = 4.0')
 def step_impl(context):
-    assert context.xs[0] == 4.0
+    assert context.xs[0].t == 4.0
 
 
-@then('xs[1] = 6.0')
+@then('xs[1].t = 6.0')
 def step_impl(context):
-    assert context.xs[1] == 6.0
+    assert context.xs[1].t == 6.0
 
 
-@then('xs[0] = 5.0')
+@then('xs[0].t = 5.0')
 def step_impl(context):
-    assert context.xs[0] == 5.0
+    assert context.xs[0].t == 5.0
 
 
-@then('xs[1] = 5.0')
+@then('xs[1].t = 5.0')
 def step_impl(context):
-    assert context.xs[1] == 5.0
+    assert context.xs[1].t == 5.0
 
 
-@then('xs[0] = -1.0')
+@then('xs[0].t = -1.0')
 def step_impl(context):
-    assert context.xs[0] == -1.0
+    assert context.xs[0].t == -1.0
 
 
-@then('xs[1] = 1.0')
+@then('xs[1].t = 1.0')
 def step_impl(context):
-    assert context.xs[1] == 1.0
+    assert context.xs[1].t == 1.0
 
 
-@then('xs[0] = -6.0')
+@then('xs[0].t = -6.0')
 def step_impl(context):
-    assert context.xs[0] == -6.0
+    assert context.xs[0].t == -6.0
 
 
-@then('xs[1] = -4.0')
+@then('xs[1].t = -4.0')
 def step_impl(context):
-    assert context.xs[1] == -4.0
+    assert context.xs[1].t == -4.0
+
+
+@then('xs[0].obj = s')
+def step_impl(context):
+    assert context.xs[0].obj == context.s
+
+
+@then('xs[1].obj = s')
+def step_impl(context):
+    assert context.xs[1].obj == context.s
