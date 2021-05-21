@@ -18,7 +18,7 @@ class Sphere:
         c = sphere_to_ray.dot(sphere_to_ray) - 1
         discriminant = b ** 2 - 4 * a * c
         if discriminant < 0:
-            return []
+            return Intersections()
         t_1 = (-b - discriminant.sqrt()) / (2 * a)
         t_2 = (-b + discriminant.sqrt()) / (2 * a)
 
