@@ -22,7 +22,9 @@ if __name__ == '__main__':
     # shape = Sphere(transform=ScalingMatrix(1, 0.5, 1))
     # shape = Sphere(transform=ScalingMatrix(0.5, 1, 1))
     # shape = Sphere(transform=(RotationMatrix(z_radians=Decimal(math.pi)/4) * ScalingMatrix(0.5, 1, 1)))
-    shape = Sphere(transform=(ShearingMatrix(1, 0, 0, 0, 0, 0) * ScalingMatrix(0.5, 1, 1)))
+    # shape = Sphere(transform=(ScalingMatrix(0.5, 1, 1).rotate(z_radians=Decimal(math.pi)/4)))
+    # shape = Sphere(transform=(ShearingMatrix(1, 0, 0, 0, 0, 0) * ScalingMatrix(0.5, 1, 1)))
+    shape = Sphere(transform=(ScalingMatrix(0.5, 1, 1).shear(1, 0, 0, 0, 0, 0)))
 
     for y in range(canvas_pixels):
         world_y = half - pixel_size * y
