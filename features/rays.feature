@@ -13,3 +13,17 @@ Feature: Rays
     And r.position(1) = Point(3, 3, 4)
     And r.position(-1) = Point(1, 3, 4)
     And r.position(2.5) = Point(4.5, 3, 4)
+
+  Scenario: Translating a ray
+    Given r ← Ray(Point(1, 2, 3), Vector(0, 1, 0))
+    And m ← TranslationMatrix(3, 4, 5)
+    When r2 ← r.transform(m)
+    Then r2.origin = Point(4, 6, 8)
+    And r2.direction = Vector(0, 1, 0)
+
+  Scenario: Scaling a ray
+    Given r ← Ray(Point(1, 2, 3), Vector(0, 1, 0))
+    And m ← ScalingMatrix(2, 3, 4)
+    When r2 ← r.transform(m)
+    Then r2.origin = Point(2, 6, 12)
+    And r2.direction = Vector(0, 3, 0)

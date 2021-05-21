@@ -1,15 +1,17 @@
 from dataclasses import dataclass
 
 from src.intersection import Intersection, Intersections
-from src.matrix import Point
+from src.matrix import Point, Matrix, IdentityMatrix
 from src.ray import Ray
 
 
 @dataclass
 class Sphere:
     center: Point = Point(0, 0, 0)
+    transform: Matrix = IdentityMatrix(4)
 
     def intersect(self, ray: Ray):
+        ray = ray.transform(self.transform.inverse())
         sphere_to_ray = ray.origin - self.center
         a = ray.direction.dot(ray.direction)
         b = 2 * ray.direction.dot(sphere_to_ray)
