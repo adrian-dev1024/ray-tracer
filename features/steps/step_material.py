@@ -60,6 +60,10 @@ def step_impl(context):
 def step_impl(context):
     context.result = context.m.lighting(context.light, context.position, context.eye_v, context.normal_v)
 
+@when('result ← m.lighting(light, position, eye_v, normal_v, round_specular=False)')
+def step_impl(context):
+    context.result = context.m.lighting(context.light, context.position, context.eye_v, context.normal_v, round_specular=False)
+
 
 @then('m.color = Color(1, 1, 1)')
 def step_impl(context):
@@ -98,13 +102,11 @@ def step_impl(context):
 
 @then('result = Color(0.7364, 0.7364, 0.7364)')
 def step_impl(context):
-    r = context.result
     assert context.result == Color(0.7364, 0.7364, 0.7364)
 
 
 @then('result = Color(1.6364, 1.6364, 1.6364)')
 def step_impl(context):
-    r = context.result
     assert context.result == Color(1.6364, 1.6364, 1.6364)
 
 
