@@ -112,3 +112,15 @@ Feature: Scalars
     And b ← Vector(2, 3, 4)
     Then a.cross(b) = Vector(-1, 2, -1)
     And b.cross(a) = Vector(1, -2, 1)
+
+  Scenario: Reflecting a vector approaching at 45°
+    Given v ← Vector(1, -1, 0)
+    And n ← Vector(0, 1, 0)
+    When r ← v.reflect(n)
+    Then r = Vector(1, 1, 0)
+
+  Scenario: Reflecting a vector off a slanted surface
+    Given v ← Vector(0, -1, 0)
+    And n ← Vector(√2/2, √2/2, 0)
+    When r ← v.reflect(n)
+    Then r = Vector(1, 0, 0)
