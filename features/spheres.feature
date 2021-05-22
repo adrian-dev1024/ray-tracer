@@ -104,3 +104,14 @@ Feature: Spheres
     Given s ← Sphere(transform=RotationMatrix(z_radians=π/5).scale(1, 0.5, 1))
     When n ← s.normal_at(Point(0, √2/2, -√2/2))
     Then n = Vector(0, 0.97014, -0.24254)
+
+  Scenario: A sphere has a default material
+    Given s ← Sphere()
+    Then s.material = Material()
+
+  Scenario: A sphere may be assigned a material
+    Given s ← Sphere()
+    And m ← Material()
+    And m.ambient ← 1
+    When s.material ← m
+    Then s.material = m

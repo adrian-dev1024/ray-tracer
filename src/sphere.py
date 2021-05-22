@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from src.intersection import Intersection, Intersections
 from src.matrix import Point, Matrix, IdentityMatrix, Vector
+from src.scene import Material
 from src.ray import Ray
 
 
@@ -9,6 +10,7 @@ from src.ray import Ray
 class Sphere:
     center: Point = Point(0, 0, 0)
     transform: Matrix = IdentityMatrix(4)
+    material: Material = Material()
 
     def intersect(self, ray: Ray):
         ray = ray.transform(self.transform.inverse())
