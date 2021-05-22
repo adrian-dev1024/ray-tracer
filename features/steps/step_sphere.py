@@ -6,10 +6,12 @@
 # ----------------------------------------------------------------------------
 # STEPS:
 # ----------------------------------------------------------------------------
+import math
+from decimal import Decimal
 
 from behave import given, then, when
 
-from src.matrix import Point, Vector, TranslationMatrix, IdentityMatrix, ScalingMatrix
+from src.matrix import Point, Vector, TranslationMatrix, IdentityMatrix, ScalingMatrix, RotationMatrix
 from src.ray import Ray
 from src.sphere import Sphere
 
@@ -58,6 +60,14 @@ def step_impl(context):
 def step_impl(context):
     context.t = TranslationMatrix(2, 3, 4)
 
+@given('s ← Sphere(transform=TranslationMatrix(0, 1, 0))')
+def step_impl(context):
+    context.s = Sphere(transform=TranslationMatrix(0, 1, 0))
+
+@given('s ← sphere(transform=RotationMatrix(z_radians=π/5).scale(1, 0.5, 1))')
+def step_impl(context):
+    context.s = Sphere(transform=RotationMatrix(z_radians=Decimal(math.pi)/5).scale(1, 0.5, 1))
+
 
 @when('xs ← s.intersect(r)')
 def step_impl(context):
@@ -67,6 +77,35 @@ def step_impl(context):
 @when('s.transform ← t')
 def step_impl(context):
     context.s.transform = context.t
+
+
+@when('n ← s.normal_at(Point(1, 0, 0))')
+def step_impl(context):
+    context.n = context.s.normal_at(Point(1, 0, 0))
+
+
+@when('n ← s.normal_at(Point(0, 1, 0))')
+def step_impl(context):
+    context.n = context.s.normal_at(Point(0, 1, 0))
+
+
+@when('n ← s.normal_at(Point(0, 0, 1))')
+def step_impl(context):
+    context.n = context.s.normal_at(Point(0, 0, 1))
+
+
+@when('n ← s.normal_at(Point(√3/3, √3/3, √3/3))')
+def step_impl(context):
+    context.n = context.s.normal_at(Point(Decimal(3).sqrt() / 3, Decimal(3).sqrt() / 3, Decimal(3).sqrt() / 3))
+
+@when('n ← s.normal_at(Point(0, 1.70711, -0.70711))')
+def step_impl(context):
+    context.n = context.s.normal_at(Point(0, 1.70711, -0.70711))
+
+
+@when('n ← s.normal_at(Point(0, √2/2, -√2/2))')
+def step_impl(context):
+    context.n = context.s.normal_at(Point(0, Decimal(2).sqrt() / 2, Decimal(2).sqrt() / 2))
 
 
 @then('len(xs) = 2')
@@ -147,3 +186,36 @@ def step_impl(context):
 @then('xs[1].t = 7')
 def step_impl(context):
     assert context.xs[1].t == 7
+
+
+@then('n = Vector(1, 0, 0)')
+def step_impl(context):
+    assert context.n == Vector(1, 0, 0)
+
+
+@then('n = Vector(0, 1, 0)')
+def step_impl(context):
+    assert context.n == Vector(0, 1, 0)
+
+
+@then('n = Vector(0, 0, 1)')
+def step_impl(context):
+    assert context.n == Vector(0, 0, 1)
+
+
+@then('n = Vector(√3/3, √3/3, √3/3)')
+def step_impl(context):
+    assert context.n == Vector(Decimal(3).sqrt() / 3, Decimal(3).sqrt() / 3, Decimal(3).sqrt() / 3)
+
+
+@then('n = n.normalize()')
+def step_impl(context):
+    assert context.n == context.n.normalize()
+
+@then('n = Vector(0, 0.70711, -0.70711)')
+def step_impl(context):
+    assert context.n == Vector(0, 0.70711, -0.70711)
+
+@then('n = Vector(0, 0.97014, -0.24254)')
+def step_impl(context):
+    assert context.n == Vector(0, 0.97014, -0.24254)
