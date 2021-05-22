@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from src.intersection import Intersection, Intersections
-from src.matrix import Point, Matrix, IdentityMatrix
+from src.matrix import Point, Matrix, IdentityMatrix, Vector
 from src.ray import Ray
 
 
@@ -23,3 +23,9 @@ class Sphere:
         t_2 = (-b + discriminant.sqrt()) / (2 * a)
 
         return Intersections(Intersection(t_1, self), Intersection(t_2, self))
+
+    def normal_at(self, point: Point):
+        object_point = self.transform.inverse() * point
+        object_normal = object_point - self.center
+        world_normal = self.transform.inverse().transpose() * object_normal
+        return Vector(world_normal.x, world_normal.y, world_normal.z).normalize()

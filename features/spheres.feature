@@ -69,3 +69,38 @@ Feature: Spheres
     And s ← Sphere(transform=TranslationMatrix(5, 0, 0))
     When xs ← s.intersect(r)
     Then len(xs) = 0
+
+  Scenario: The normal on a sphere at a point on the x axis
+    Given s ← Sphere()
+    When n ← s.normal_at(Point(1, 0, 0))
+    Then n = Vector(1, 0, 0)
+
+  Scenario: The normal on a sphere at a point on the y axis
+    Given s ← Sphere()
+    When n ← s.normal_at(Point(0, 1, 0))
+    Then n = Vector(0, 1, 0)
+
+  Scenario: The normal on a sphere at a point on the z axis
+    Given s ← Sphere()
+    When n ← s.normal_at(Point(0, 0, 1))
+    Then n = Vector(0, 0, 1)
+
+  Scenario: The normal on a sphere at a nonaxial point
+    Given s ← Sphere()
+    When n ← s.normal_at(Point(√3/3, √3/3, √3/3))
+    Then n = Vector(√3/3, √3/3, √3/3)
+
+  Scenario: The normal is a normalized vector
+    Given s ← Sphere()
+    When n ← s.normal_at(Point(√3/3, √3/3, √3/3))
+    Then n = n.normalize()
+
+  Scenario: Computing the normal on a translated sphere
+    Given s ← Sphere(transform=TranslationMatrix(0, 1, 0))
+    When n ← s.normal_at(Point(0, 1.70711, -0.70711))
+    Then n = Vector(0, 0.70711, -0.70711)
+
+  Scenario: Computing the normal on a transformed sphere
+    Given s ← Sphere(transform=RotationMatrix(z_radians=π/5).scale(1, 0.5, 1))
+    When n ← s.normal_at(Point(0, √2/2, -√2/2))
+    Then n = Vector(0, 0.97014, -0.24254)
