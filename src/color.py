@@ -9,9 +9,9 @@ class Color:
     blue: Decimal
 
     def __init__(self, red, green, blue):
-        self.red = Decimal(str(red))
-        self.green = Decimal(str(green))
-        self.blue = Decimal(str(blue))
+        self.red = Decimal(red).normalize()
+        self.green = Decimal(green).normalize()
+        self.blue = Decimal(blue).normalize()
 
     def __add__(self, other):
         return Color(

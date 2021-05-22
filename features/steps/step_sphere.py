@@ -12,6 +12,7 @@ from decimal import Decimal
 from behave import given, then, when
 
 from src.matrix import Point, Vector, TranslationMatrix, IdentityMatrix, ScalingMatrix, RotationMatrix
+from src.scene import Material
 from src.ray import Ray
 from src.sphere import Sphere
 
@@ -60,13 +61,20 @@ def step_impl(context):
 def step_impl(context):
     context.t = TranslationMatrix(2, 3, 4)
 
+
 @given('s ← Sphere(transform=TranslationMatrix(0, 1, 0))')
 def step_impl(context):
     context.s = Sphere(transform=TranslationMatrix(0, 1, 0))
 
+
 @given('s ← sphere(transform=RotationMatrix(z_radians=π/5).scale(1, 0.5, 1))')
 def step_impl(context):
-    context.s = Sphere(transform=RotationMatrix(z_radians=Decimal(math.pi)/5).scale(1, 0.5, 1))
+    context.s = Sphere(transform=RotationMatrix(z_radians=Decimal(math.pi) / 5).scale(1, 0.5, 1))
+
+
+@given('m.ambient ← 1')
+def step_impl(context):
+    context.m.ambient = 1
 
 
 @when('xs ← s.intersect(r)')
@@ -98,6 +106,7 @@ def step_impl(context):
 def step_impl(context):
     context.n = context.s.normal_at(Point(Decimal(3).sqrt() / 3, Decimal(3).sqrt() / 3, Decimal(3).sqrt() / 3))
 
+
 @when('n ← s.normal_at(Point(0, 1.70711, -0.70711))')
 def step_impl(context):
     context.n = context.s.normal_at(Point(0, 1.70711, -0.70711))
@@ -106,6 +115,10 @@ def step_impl(context):
 @when('n ← s.normal_at(Point(0, √2/2, -√2/2))')
 def step_impl(context):
     context.n = context.s.normal_at(Point(0, Decimal(2).sqrt() / 2, Decimal(2).sqrt() / 2))
+
+@when('s.material ← m')
+def step_impl(context):
+    context.s.material = context.m
 
 
 @then('len(xs) = 2')
@@ -212,10 +225,22 @@ def step_impl(context):
 def step_impl(context):
     assert context.n == context.n.normalize()
 
+
 @then('n = Vector(0, 0.70711, -0.70711)')
 def step_impl(context):
     assert context.n == Vector(0, 0.70711, -0.70711)
 
+
 @then('n = Vector(0, 0.97014, -0.24254)')
 def step_impl(context):
     assert context.n == Vector(0, 0.97014, -0.24254)
+
+
+@then('s.material = Material()')
+def step_impl(context):
+    assert context.s.material == Material()
+
+
+@then('s.material = m')
+def step_impl(context):
+    assert context.s.material == context.m
