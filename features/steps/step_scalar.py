@@ -143,9 +143,34 @@ def step_impl(context):
     context.b = Vector(2, 3, 4)
 
 
+@given('v ← Vector(1, -1, 0)')
+def step_impl(context):
+    context.v = Vector(1, -1, 0)
+
+
+@given('v ← Vector(0, -1, 0)')
+def step_impl(context):
+    context.v = Vector(0, -1, 0)
+
+
+@given('n ← Vector(0, 1, 0)')
+def step_impl(context):
+    context.n = Vector(0, 1, 0)
+
+
+@given('n ← Vector(√2/2, √2/2, 0)')
+def step_impl(context):
+    context.n = Vector(Decimal(2).sqrt() / 2, Decimal(2).sqrt() / 2, 0)
+
+
 @when('norm ← v.normalize()')
 def step_impl(context):
     context.norm = context.v.normalize()
+
+
+@when('r ← v.reflect(n)')
+def step_impl(context):
+    context.r = context.v.reflect(context.n)
 
 
 @then('a.x = 4.3')
@@ -283,12 +308,13 @@ def step_impl(context):
     norm = context.v.normalize()
     assert math.isclose(norm.x, 0.26726, rel_tol=0.00001)
     assert math.isclose(norm.y, 0.53452, rel_tol=0.00001)
-    assert math.isclose(norm.z,  0.80178, rel_tol=0.00001)
+    assert math.isclose(norm.z, 0.80178, rel_tol=0.00001)
 
 
 @then('v.normalize() = Vector(1/√14, 2/√14, 3/√14)')
 def step_impl(context):
-    assert context.v.normalize() == Vector(1 / Decimal(math.sqrt(14)), 2 / Decimal(math.sqrt(14)), 3 / Decimal(math.sqrt(14)))
+    assert context.v.normalize() == Vector(1 / Decimal(math.sqrt(14)), 2 / Decimal(math.sqrt(14)),
+                                           3 / Decimal(math.sqrt(14)))
 
 
 @then('norm.magnitude() = 1')
@@ -309,3 +335,11 @@ def step_impl(context):
 @then('b.cross(a) = Vector(1, -2, 1)')
 def step_impl(context):
     assert context.b.cross(context.a) == Vector(1, -2, 1)
+
+@then('r = Vector(1, 1, 0)')
+def step_impl(context):
+    assert context.r == Vector(1, 1, 0)
+
+@then('r = Vector(1, 0, 0)')
+def step_impl(context):
+    assert context.r == Vector(1, 0, 0)

@@ -268,6 +268,9 @@ class Vector(Scalar):
             self.x * other.y - self.y * other.x
         )
 
+    def reflect(self, normal):
+        return self - normal * 2 * self.dot(normal)
+
 
 def convert(coordinate: Scalar):
     if coordinate.is_a_point():
