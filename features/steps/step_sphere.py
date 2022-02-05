@@ -12,9 +12,8 @@ from decimal import Decimal
 from behave import given, then, when
 
 from src.matrix import Point, Vector, TranslationMatrix, IdentityMatrix, ScalingMatrix, RotationMatrix
-from src.scene import Material
+from src.scene import Material, Sphere
 from src.ray import Ray
-from src.sphere import Sphere
 
 
 @given('r ← Ray(Point(0, 0, -5), Vector(0, 0, 1))')

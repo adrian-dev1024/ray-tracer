@@ -5,7 +5,7 @@ from src.canvas import Canvas
 from src.color import Color
 from src.matrix import Point, ScalingMatrix, RotationMatrix, ShearingMatrix
 from src.ray import Ray
-from src.sphere import Sphere
+from src.scene import Sphere
 
 if __name__ == '__main__':
     color = Color(1, 0, 0)

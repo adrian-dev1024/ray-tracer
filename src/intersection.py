@@ -2,11 +2,24 @@ from collections import UserList
 from dataclasses import dataclass
 from decimal import Decimal
 
+from src.matrix import Vector, Point
+from src.ray import Ray
+
 
 @dataclass
 class Intersection:
     t: Decimal
     obj: object
+
+    def pre_compute(self, ray: Ray):
+        point = ray.position(self.t)
+        return IntersectionPreComputedValues(
+            self.t,
+            self.obj,
+            point,
+            ray.direction,
+            self.obj.normal_at(point)
+        )
 
 
 class Intersections(UserList):
@@ -24,3 +37,12 @@ class Intersections(UserList):
                 break
         return hit
 
+
+
+@dataclass
+class IntersectionPreComputedValues:
+    t: Decimal
+    obj: object
+    point: Point
+    eyeVec: Vector
+    normalVec: Vector

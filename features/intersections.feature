@@ -48,3 +48,15 @@ Feature: Intersections
     And xs ← Intersections(i1, i2, i3, i4)
     When i ← xs.hit()
     Then i = i4
+
+    @wip
+  Scenario: Precomputing the state of an intersection
+    Given r ← Ray(Point(0, 0, -5), Vector(0, 0, 1))
+    And shape ← Sphere()
+    And i ← Intersection(4, shape)
+    When comps ← i.pre_compute(r)
+    Then comps.t = i.t
+    And comps.obj = i.obj
+    And comps.point = Point(0, 0, -1)
+    And comps.eyeVec = Vector(0, 0, -1)
+    And comps.normalVec = Vector(0, 0, -1)
