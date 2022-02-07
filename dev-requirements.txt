@@ -1,0 +1,4 @@
+tox==3.24.5
+behave~=1.2.6
+flake8==4.0.1
+flake8-simplify
