@@ -1,11 +1,8 @@
-import math
-from decimal import Decimal
-
 from src.canvas import Canvas
 from src.color import Color
-from src.matrix import Point, ScalingMatrix, RotationMatrix, ShearingMatrix
+from src.matrix import Point
 from src.ray import Ray
-from src.scene import Sphere
+from src.shapes.sphere import Sphere
 
 if __name__ == '__main__':
     color = Color(1, 0, 0)

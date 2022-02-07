@@ -12,7 +12,8 @@ from decimal import Decimal
 from behave import given, then, when
 
 from src.matrix import Point, Vector, TranslationMatrix, IdentityMatrix, ScalingMatrix, RotationMatrix
-from src.scene import Material, Sphere
+from src.scene import Material
+from src.shapes.sphere import Sphere
 from src.ray import Ray
 
 
@@ -170,14 +171,14 @@ def step_impl(context):
     assert context.xs[1].t == -4.0
 
 
-@then('xs[0].obj = s')
+@then('xs[0].shape = s')
 def step_impl(context):
-    assert context.xs[0].obj == context.s
+    assert context.xs[0].shape == context.s
 
 
-@then('xs[1].obj = s')
+@then('xs[1].shape = s')
 def step_impl(context):
-    assert context.xs[1].obj == context.s
+    assert context.xs[1].shape == context.s
 
 
 @then('s.transform = IdentityMatrix(4)')

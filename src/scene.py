@@ -1,15 +1,12 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from decimal import Decimal
-from typing import List
 
 from src.color import Color
-from src.intersection import Intersections, Intersection
-from src.matrix import Point, ScalingMatrix, Matrix, IdentityMatrix, Vector
-from src.ray import Ray
+from src.matrix import Point
 
 
 @dataclass
-class LightPoint:
+class LightSource:
     position: Point
     intensity: Color
 
@@ -61,53 +58,3 @@ class Material:
                 specular.green = specular.green.quantize(Decimal('0.1'))
 
         return ambient + diffuse + specular
-
-
-@dataclass
-class World:
-    objects: List = field(default_factory=lambda: [])
-    light_source: LightPoint = None
-
-    def intersect(self, ray: Ray):
-        intersections = Intersections()
-        for o in self.objects:
-            intersections += o.intersect(ray)
-        intersections.sort(key=lambda i: i.t)
-        return intersections
-
-
-def default_world():
-    return World(
-        objects=[
-            Sphere(material=Material(color=Color(0.8, 1.0, 0.6), diffuse=Decimal(0.7), specular=Decimal(0.2))),
-            Sphere(transform=ScalingMatrix(0.5, 0.5, 0.5))
-        ],
-        light_source=LightPoint(Point(-10, 10, -10), Color(1, 1, 1))
-    )
-
-
-@dataclass
-class Sphere:
-    center: Point = Point(0, 0, 0)
-    transform: Matrix = IdentityMatrix(4)
-    material: Material = Material()
-
-    def intersect(self, ray: Ray):
-        ray = ray.transform(self.transform.inverse())
-        sphere_to_ray = ray.origin - self.center
-        a = ray.direction.dot(ray.direction)
-        b = 2 * ray.direction.dot(sphere_to_ray)
-        c = sphere_to_ray.dot(sphere_to_ray) - 1
-        discriminant = b ** 2 - 4 * a * c
-        if discriminant < 0:
-            return Intersections()
-        t_1 = (-b - discriminant.sqrt()) / (2 * a)
-        t_2 = (-b + discriminant.sqrt()) / (2 * a)
-
-        return Intersections(Intersection(t_1, self), Intersection(t_2, self))
-
-    def normal_at(self, point: Point):
-        object_point = self.transform.inverse() * point
-        object_normal = object_point - self.center
-        world_normal = self.transform.inverse().transpose() * object_normal
-        return Vector(world_normal.x, world_normal.y, world_normal.z).normalize()

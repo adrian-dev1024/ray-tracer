@@ -10,7 +10,7 @@
 from behave import given, then, when
 
 from src.color import Color
-from src.scene import LightPoint
+from src.scene import LightSource
 from src.matrix import Point
 
 
@@ -24,9 +24,9 @@ def step_impl(context):
     context.position = Point(0, 0, 0)
 
 
-@when('light ← LightPoint(position, intensity)')
+@when('light ← LightSource(position, intensity)')
 def step_impl(context):
-    context.light = LightPoint(context.position, context.intensity)
+    context.light = LightSource(context.position, context.intensity)
 
 
 @then('light.position = position')
