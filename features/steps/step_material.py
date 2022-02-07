@@ -13,7 +13,7 @@ from behave import given, then, when
 from src.color import Color
 from src.matrix import Vector, Point
 
-from src.scene import Material, LightPoint
+from src.scene import Material, LightSource
 
 
 @given('m ← Material()')
@@ -41,19 +41,19 @@ def step_impl(context):
     context.normal_v = Vector(0, 0, -1)
 
 
-@given('light ← LightPoint(Point(0, 0, -10), Color(1, 1, 1))')
+@given('light ← LightSource(Point(0, 0, -10), Color(1, 1, 1))')
 def step_impl(context):
-    context.light = LightPoint(Point(0, 0, -10), Color(1, 1, 1))
+    context.light = LightSource(Point(0, 0, -10), Color(1, 1, 1))
 
 
-@given('light ← LightPoint(Point(0, 10, -10), Color(1, 1, 1))')
+@given('light ← LightSource(Point(0, 10, -10), Color(1, 1, 1))')
 def step_impl(context):
-    context.light = LightPoint(Point(0, 10, -10), Color(1, 1, 1))
+    context.light = LightSource(Point(0, 10, -10), Color(1, 1, 1))
 
 
-@given('light ← LightPoint(Point(0, 0, 10), Color(1, 1, 1))')
+@given('light ← LightSource(Point(0, 0, 10), Color(1, 1, 1))')
 def step_impl(context):
-    context.light = LightPoint(Point(0, 0, 10), Color(1, 1, 1))
+    context.light = LightSource(Point(0, 0, 10), Color(1, 1, 1))
 
 
 @when('result ← m.lighting(light, position, eye_v, normal_v)')

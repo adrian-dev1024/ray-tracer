@@ -1,13 +1,12 @@
-import math
 from dataclasses import dataclass
-from decimal import Decimal, ROUND_UP
+from decimal import Decimal
 
 from src.color import Color
 from src.matrix import Point
 
 
 @dataclass
-class LightPoint:
+class LightSource:
     position: Point
     intensity: Color
 

@@ -38,13 +38,13 @@ Feature: Spheres
     And xs[0].t = -6.0
     And xs[1].t = -4.0
 
-  Scenario: Intersect sets the object on the intersection
+  Scenario: Intersect sets the shape on the intersection
     Given r ← Ray(Point(0, 0, -5), Vector(0, 0, 1))
     And s ← Sphere()
     When xs ← s.intersect(r)
     Then len(xs) = 2
-    And xs[0].obj = s
-    And xs[1].obj = s
+    And xs[0].shape = s
+    And xs[1].shape = s
 
   Scenario: A sphere's default transformation
     Given s ← Sphere()

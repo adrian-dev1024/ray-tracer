@@ -1,12 +1,9 @@
-import math
-from decimal import Decimal
-
 from src.canvas import Canvas
 from src.color import Color
-from src.matrix import Point, ScalingMatrix, RotationMatrix, ShearingMatrix
+from src.matrix import Point
 from src.ray import Ray
-from src.scene import Material, LightPoint
-from src.sphere import Sphere
+from src.scene import Material, LightSource
+from src.shapes.sphere import Sphere
 
 if __name__ == '__main__':
     color = Color(1, 0, 0)
@@ -34,7 +31,7 @@ if __name__ == '__main__':
     # white light behind, above and to the left of the eye
     light_position = Point(-10, 10, -10)
     light_color = Color(1, 1, 1)
-    light = LightPoint(light_position, light_color)
+    light = LightSource(light_position, light_color)
 
     for y in range(canvas_pixels):
         world_y = half - pixel_size * y
@@ -46,9 +43,9 @@ if __name__ == '__main__':
             if xs.hit():
                 hit = xs.hit()
                 point = r.position(hit.t)
-                normal = hit.obj.normal_at(point)
+                normal = hit.shape.normal_at(point)
                 eye = -r.direction
-                color = hit.obj.material.lighting(light, point, eye, normal)
+                color = hit.shape.material.lighting(light, point, eye, normal)
                 canvas.write_pixel(x, y, color)
 
     with open('/tmp/sphere_3D.ppm', mode='w') as f:

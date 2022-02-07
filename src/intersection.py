@@ -2,15 +2,37 @@ from collections import UserList
 from dataclasses import dataclass
 from decimal import Decimal
 
+from src.matrix import Vector, Point
+from src.ray import Ray
+from src.shapes.shape import Shape
+
 
 @dataclass
 class Intersection:
     t: Decimal
-    obj: object
+    shape: Shape
+
+    def pre_compute(self, ray: Ray):
+        point = ray.position(self.t)
+        normalVec = self.shape.normal_at(point)
+        eyeVec = -ray.direction
+        inside = False
+        if normalVec.dot(eyeVec) < 0:
+            normalVec = -normalVec
+            inside = True
+
+        return IntersectionPreComputedValues(
+            self.t,
+            self.shape,
+            point,
+            eyeVec,
+            normalVec,
+            inside
+        )
 
 
 class Intersections(UserList):
-    
+
     def __init__(self, *args):
         # TODO: Probably Should to verify that all args are of type Intersection
         super(Intersections, self).__init__(args)
@@ -24,3 +46,12 @@ class Intersections(UserList):
                 break
         return hit
 
+
+@dataclass
+class IntersectionPreComputedValues:
+    t: Decimal
+    shape: Shape
+    point: Point
+    eyeVec: Vector
+    normalVec: Vector
+    inside: bool

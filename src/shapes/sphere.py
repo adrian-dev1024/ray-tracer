@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 
-from src.intersection import Intersection, Intersections
+from src.intersection import Intersections, Intersection
 from src.matrix import Point, Matrix, IdentityMatrix, Vector
-from src.scene import Material
 from src.ray import Ray
+from src.scene import Material
+from src.shapes.shape import Shape
 
 
 @dataclass
-class Sphere:
+class Sphere(Shape):
     center: Point = Point(0, 0, 0)
     transform: Matrix = IdentityMatrix(4)
     material: Material = Material()
