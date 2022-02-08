@@ -289,7 +289,7 @@ def convert(coordinate: Scalar):
 class IdentityMatrix(Matrix):
     _instance = None
 
-    def __init__(self, size):
+    def __init__(self, size=4):
         super(IdentityMatrix, self).__init__(size, size)
         for i in range(size):
             self[i, i] = 1

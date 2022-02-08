@@ -6,12 +6,15 @@
 # ----------------------------------------------------------------------------
 # STEPS:
 # ----------------------------------------------------------------------------
+import itertools
 from decimal import Decimal
 
 from behave import given, then, when
 import math
 
-from src.matrix import TranslationMatrix, ScalingMatrix, RotationMatrix, ShearingMatrix, Point, Vector
+from src.matrix import TranslationMatrix, ScalingMatrix, RotationMatrix, ShearingMatrix, Point, Vector, IdentityMatrix, \
+    Matrix
+from src.scene import PointOfView
 
 
 @given('transform ← TranslationMatrix(5, -3, 2)')
@@ -159,6 +162,61 @@ def step_impl(context):
     context.transform = ShearingMatrix(z_y=1)
 
 
+@given('from ← Point(0, 0, 0)')
+def step_impl(context):
+    context.frm = Point(0, 0, 0)
+
+
+@given('to ← Point(0, 0, -1)')
+def step_impl(context):
+    context.to = Point(0, 0, -1)
+
+
+@given('up ← Vector(0, 1, 0)')
+def step_impl(context):
+    context.up = Vector(0, 1, 0)
+
+
+@given('pov ← PointOfView(from, to, up)')
+def step_impl(context):
+    context.pov = PointOfView(context.frm, context.to, context.up)
+
+
+@given('to ← Point(0, 0, 1)')
+def step_impl(context):
+    context.to = Point(0, 0, 1)
+
+
+@given('from ← Point(0, 0, 8)')
+def step_impl(context):
+    context.frm = Point(0, 0, 8)
+
+
+@given('to ← Point(0, 0, 0)')
+def step_impl(context):
+    context.to = Point(0, 0, 0)
+
+
+@when('t ← pov.transform()')
+def step_impl(context):
+    context.t = context.pov.transform()
+
+
+@given('from ← Point(1, 3, 2)')
+def step_impl(context):
+    context.frm = Point(1, 3, 2)
+
+
+@given(u'to ← Point(4, -2, 8)')
+def step_impl(context):
+    context.to = Point(4, -2, 8)
+
+
+@given('up ← Vector(1, 1, 0)')
+def step_impl(context):
+    context.up = Vector(1, 1, 0)
+
+
 @then('transform * p = Point(2, 1, 7)')
 def step_impl(context):
     assert context.transform * context.p == Point(2, 1, 7)
@@ -277,3 +335,26 @@ def step_impl(context):
 @then('transform * p = Point(2, 3, 7)')
 def step_impl(context):
     assert context.transform * context.p == Point(2, 3, 7)
+
+
+@then('t = identity_matrix')
+def step_impl(context):
+    assert context.t == IdentityMatrix()
+
+
+@then('t = ScalingMatrix(-1, 1, -1)')
+def step_impl(context):
+    assert context.t == ScalingMatrix(-1, 1, -1)
+
+
+@then('t = TranslationMatrix(0, 0, -8)')
+def step_impl(context):
+    assert context.t == TranslationMatrix(0, 0, -8)
+
+
+@then('t is the following 4x4 matrix')
+def step_impl(context):
+    t = context.t
+    values = context.table.headings + list(itertools.chain(*context.table.rows))
+    a = Matrix(4, 4, values=list(map(Decimal, values)))
+    assert context.t == Matrix(4, 4, values=list(map(Decimal, values)))

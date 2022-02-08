@@ -109,3 +109,43 @@ Feature: Matrix Transformations
     Given transform ← ShearingMatrix(z_y=1)
     And p ← Point(2, 3, 4)
     Then transform * p = Point(2, 3, 7)
+
+  @wip
+  Scenario: The transformation matrix for the default orientation
+    Given from ← Point(0, 0, 0)
+    And to ← Point(0, 0, -1)
+    And up ← Vector(0, 1, 0)
+    And pov ← PointOfView(from, to, up)
+    When t ← pov.transform()
+    Then t = identity_matrix
+
+  @wip
+  Scenario: A view transformation matrix looking in positive z direction
+    Given from ← Point(0, 0, 0)
+    And to ← Point(0, 0, 1)
+    And up ← Vector(0, 1, 0)
+    And pov ← PointOfView(from, to, up)
+    When t ← pov.transform()
+    Then t = ScalingMatrix(-1, 1, -1)
+
+  @wip
+  Scenario: The view transformation moves the world
+    Given from ← Point(0, 0, 8)
+    And to ← Point(0, 0, 0)
+    And up ← Vector(0, 1, 0)
+    And pov ← PointOfView(from, to, up)
+    When t ← pov.transform()
+    Then t = TranslationMatrix(0, 0, -8)
+
+  @wip
+  Scenario: An arbitrary view transformation
+    Given from ← Point(1, 3, 2)
+    And to ← Point(4, -2, 8)
+    And up ← Vector(1, 1, 0)
+    And pov ← PointOfView(from, to, up)
+    When t ← pov.transform()
+    Then t is the following 4x4 matrix:
+      | -0.50710 | 0.50710 | 0.67613  | -2.3665 |
+      | 0.76772  | 0.60610 | 0.12122  | -2.8284 |
+      | -0.35857 | 0.59761 | -0.71714 | 0.0001  |
+      | 0        | 0       | 0        | 1       |
