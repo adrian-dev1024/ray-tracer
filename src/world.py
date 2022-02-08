@@ -43,7 +43,6 @@ class World:
         return self.shade_hit(hit.pre_compute(ray))
 
 
-
 def default_world():
     return World(
         shapes=[

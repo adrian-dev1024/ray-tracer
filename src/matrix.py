@@ -21,7 +21,7 @@ class ScalarNotVector(Exception):
     pass
 
 
-class Matrix(object):
+class Matrix:
 
     def __init__(self, row_num, col_num, values=None, default_value=Decimal(0)):
         self.__row_num = row_num
@@ -63,23 +63,29 @@ class Matrix(object):
         return False
 
     def __mul__(self, other):
-        if isinstance(other, IdentityMatrix):
+        if not isinstance(other, Matrix):
+            raise MatrixError('Can only multiply by Scalar or Matrix')
+
+        elif isinstance(other, IdentityMatrix):
             return self
-        elif isinstance(other, Matrix):
+
+        else:
             if self.col_num != other.row_num:
                 raise MatrixError('Right Matrix\'s column number must equal left Matrix\'s row number')
+
             values = []
+
             for m in range(self.row_num):
                 for p in range(other.col_num):
                     v = 0
                     for n in range(self.col_num):
                         v += self[m, n] * other[n, p]
                     values.append(v)
+
             if isinstance(other, Scalar):
                 return convert(Scalar(*values))
+
             return Matrix(self.row_num, other.col_num, values)
-        else:
-            raise MatrixError('Can only multiply by Scalar or Matrix')
 
     def transpose(self):
         values = []
@@ -283,16 +289,16 @@ def convert(coordinate: Scalar):
 class IdentityMatrix(Matrix):
     _instance = None
 
-    def __init__(self, size):
+    def __init__(self, size=4):
         super(IdentityMatrix, self).__init__(size, size)
         for i in range(size):
             self[i, i] = 1
 
     def __mul__(self, other):
-        if isinstance(other, Scalar) or isinstance(other, Matrix):
-            return other
-        else:
+        if not isinstance(other, (Scalar, Matrix)):
             raise MatrixError('Can only multiply by Scalar or Matrix')
+
+        return other
 
     def transpose(self):
         return self

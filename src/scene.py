@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 
 from src.color import Color
-from src.matrix import Point
+from src.matrix import Point, Vector, Matrix, TranslationMatrix
 
 
 @dataclass
@@ -58,3 +58,26 @@ class Material:
                 specular.green = specular.green.quantize(Decimal('0.1'))
 
         return ambient + diffuse + specular
+
+
+@dataclass
+class PointOfView:
+    frm: Point
+    to: Point
+    up: Vector
+
+    def transform(self):
+        forward = (self.to - self.frm).normalize()
+        up_norm = self.up.normalize()
+        left = forward.cross(up_norm)
+        # left = up_norm.cross(forward)
+        true_up = left.cross(forward)
+        # true_up = forward.cross(left)
+        values = [
+            left.x,     left.y,     left.z,     0,
+            true_up.x,  true_up.y,  true_up.z,  0,
+            -forward.x, -forward.y, -forward.z, 0,
+            0,          0,          0,          1
+        ]
+        orientation = Matrix(4, 4, values)
+        return orientation * TranslationMatrix(-self.frm.x, -self.frm.y, -self.frm.z)
