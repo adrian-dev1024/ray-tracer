@@ -70,9 +70,7 @@ class PointOfView:
         forward = (self.to - self.frm).normalize()
         up_norm = self.up.normalize()
         left = forward.cross(up_norm)
-        # left = up_norm.cross(forward)
         true_up = left.cross(forward)
-        # true_up = forward.cross(left)
         values = [
             left.x,     left.y,     left.z,     0,
             true_up.x,  true_up.y,  true_up.z,  0,
