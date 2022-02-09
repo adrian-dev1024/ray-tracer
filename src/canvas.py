@@ -1,20 +1,15 @@
+from dataclasses import dataclass
+
 from src.color import Color
 
 
+@dataclass
 class Canvas:
+    width: int
+    height: int
 
-    def __init__(self, width: int, height: int):
-        self._width = width
-        self._height = height
+    def __post_init__(self):
         self._grid = [[Color(0, 0, 0) for _ in range(self.width)] for _ in range(self.height)]
-
-    @property
-    def width(self):
-        return self._width
-
-    @property
-    def height(self):
-        return self._height
 
     @property
     def grid(self):
@@ -27,7 +22,7 @@ class Canvas:
         return self.grid[y][x]
 
     def to_ppm(self):
-        ppm_string = f'P3\n{self._width} {self.height}\n255\n'
+        ppm_string = f'P3\n{self.width} {self.height}\n255\n'
         for inner in self.grid:
             line = ''
             for pixel in inner:

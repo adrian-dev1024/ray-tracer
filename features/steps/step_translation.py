@@ -337,7 +337,7 @@ def step_impl(context):
     assert context.transform * context.p == Point(2, 3, 7)
 
 
-@then('t = identity_matrix')
+@then('t = IdentityMatrix()')
 def step_impl(context):
     assert context.t == IdentityMatrix()
 
