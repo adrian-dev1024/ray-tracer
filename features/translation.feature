@@ -110,16 +110,14 @@ Feature: Matrix Transformations
     And p ← Point(2, 3, 4)
     Then transform * p = Point(2, 3, 7)
 
-  @wip
   Scenario: The transformation matrix for the default orientation
     Given from ← Point(0, 0, 0)
     And to ← Point(0, 0, -1)
     And up ← Vector(0, 1, 0)
     And pov ← PointOfView(from, to, up)
     When t ← pov.transform()
-    Then t = identity_matrix
+    Then t = IdentityMatrix()
 
-  @wip
   Scenario: A view transformation matrix looking in positive z direction
     Given from ← Point(0, 0, 0)
     And to ← Point(0, 0, 1)
@@ -128,7 +126,6 @@ Feature: Matrix Transformations
     When t ← pov.transform()
     Then t = ScalingMatrix(-1, 1, -1)
 
-  @wip
   Scenario: The view transformation moves the world
     Given from ← Point(0, 0, 8)
     And to ← Point(0, 0, 0)
@@ -137,7 +134,7 @@ Feature: Matrix Transformations
     When t ← pov.transform()
     Then t = TranslationMatrix(0, 0, -8)
 
-  @wip
+
   Scenario: An arbitrary view transformation
     Given from ← Point(1, 3, 2)
     And to ← Point(4, -2, 8)
