@@ -56,15 +56,24 @@ def step_impl(context):
     context.light = LightSource(Point(0, 0, 10), Color(1, 1, 1))
 
 
+@given('in_shadow ← true')
+def step_impl(context):
+    context.in_shadow = True
+
+
 @when('result ← m.lighting(light, position, eye_v, normal_v)')
 def step_impl(context):
     context.result = context.m.lighting(context.light, context.position, context.eye_v, context.normal_v)
 
 
-@when('result ← m.lighting(light, position, eye_v, normal_v, round_specular=False)')
+@when('result ← m.lighting(light, position, eye_v, normal_v, in_shadow)')
 def step_impl(context):
-    context.result = context.m.lighting(context.light, context.position, context.eye_v, context.normal_v,
-                                        round_specular=False)
+    context.result = context.m.lighting(
+        context.light,
+        context.position,
+        context.eye_v,
+        context.normal_v,
+        context.in_shadow)
 
 
 @then('m.color = Color(1, 1, 1)')
