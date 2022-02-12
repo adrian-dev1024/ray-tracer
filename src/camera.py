@@ -1,7 +1,9 @@
 import math
+import time
 from dataclasses import dataclass
 from decimal import Decimal
-from functools import cached_property
+from functools import cached_property, partial
+from multiprocessing import Pool
 
 from src.canvas import Canvas
 from src.matrix import Matrix, IdentityMatrix, Point
@@ -61,5 +63,32 @@ class Camera:
                 ray = self.ray_for_pixel(x, y)
                 color = world.color_at(ray)
                 canvas.write_pixel(x, y, color)
+        return canvas
+
+    @staticmethod
+    def parallel_proc(world, camera, i):
+        y = math.floor(i / camera.h_size)
+        x = i % camera.h_size
+        ray = camera.ray_for_pixel(x, y)
+        color = world.color_at(ray)
+        return x, y, color
+
+    def parallel_render(self, world: World):
+        ts = time.time()
+        canvas = Canvas(self.h_size, self.v_size)
+
+        total_pixels = self.h_size * self.v_size
+        start = 0
+        chunk_size = 100
+        with Pool() as pool:
+
+            for i in range(start, total_pixels, chunk_size):
+                end = min(i + chunk_size, total_pixels)
+                results = pool.map(partial(Camera.parallel_proc, world, self), range(i, end))
+                for res in results:
+                    x, y, color = res
+                    canvas.write_pixel(x, y, color)
+
+        print("Time in parallel:", time.time() - ts)
 
         return canvas

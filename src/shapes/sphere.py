@@ -12,18 +12,19 @@ class Sphere(Shape):
     center: Point = Point(0, 0, 0)
     transform: Matrix = IdentityMatrix(4)
     material: Material = Material()
+    name: str = 'Sphere'
 
     def intersect(self, ray: Ray):
-        ray = ray.transform(self.transform.inverse())
-        sphere_to_ray = ray.origin - self.center
-        a = ray.direction.dot(ray.direction)
-        b = 2 * ray.direction.dot(sphere_to_ray)
+        transformed_ray = ray.transform(self.transform.inverse())
+        sphere_to_ray = transformed_ray.origin - self.center
+        a = transformed_ray.direction.dot(transformed_ray.direction)
+        b = 2 * transformed_ray.direction.dot(sphere_to_ray)
         c = sphere_to_ray.dot(sphere_to_ray) - 1
-        discriminant = b ** 2 - 4 * a * c
+        discriminant = (b ** 2) - (4 * a * c)
         if discriminant < 0:
             return Intersections()
-        t_1 = (-b - discriminant.sqrt()) / (2 * a)
-        t_2 = (-b + discriminant.sqrt()) / (2 * a)
+        t_1 = ((-b) - discriminant.sqrt()) / (2 * a)
+        t_2 = ((-b) + discriminant.sqrt()) / (2 * a)
 
         return Intersections(Intersection(t_1, self), Intersection(t_2, self))
 
