@@ -347,7 +347,7 @@ def step_impl(context):
 
 @then('b[3,2] = -160/532')
 def step_impl(context):
-    assert context.b[3, 2] == 1 * Decimal(-160 / 532)
+    assert context.b[3, 2] - Decimal(-160 / 532) < 0.00001
 
 
 @then('a.cofactor(3, 2) = 105')
@@ -357,7 +357,7 @@ def step_impl(context):
 
 @then('b[2,3] = 105/532')
 def step_impl(context):
-    assert context.b[2, 3] == 1 * Decimal(105 / 532)
+    assert context.b[2, 3] - Decimal(105 / 532) < 0.00001
 
 
 @then('b is the following 4x4 Matrix')

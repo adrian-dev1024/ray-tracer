@@ -50,12 +50,12 @@ def step_impl(context):
 
 @then('c.green = 0.4')
 def step_impl(context):
-    assert context.c.green == Decimal(str(0.4))
+    assert abs(context.c.green - Decimal(str(0.4))) < 0.000001
 
 
 @then('c.blue = 1.7')
 def step_impl(context):
-    assert context.c.blue == Decimal(str(1.7))
+    assert abs(context.c.blue - Decimal(str(1.7))) < 0.000001
 
 
 @then('c1 + c2 = Color(1.6, 0.7, 1.0)')

@@ -44,5 +44,10 @@ class Color:
         else:
             return NotImplemented
 
+    def __eq__(self, other):
+        margin = 0.00001
+        return abs(self.red - other.red) < margin and abs(self.green - other.green) < margin and abs(
+            self.blue - other.blue) < margin
+
     def __str__(self):
         return f'(r={self.red},g={self.green},b={self.blue})'

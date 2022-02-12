@@ -40,13 +40,6 @@ Feature: Materials
     When result ← m.lighting(light, position, eye_v, normal_v)
     Then result = Color(1.6364, 1.6364, 1.6364)
 
-  Scenario: Lighting with eye in the path of the reflection vector
-    Given eye_v ← Vector(0, -√2/2, -√2/2)
-    And normal_v ← Vector(0, 0, -1)
-    And light ← LightSource(Point(0, 10, -10), Color(1, 1, 1))
-    When result ← m.lighting(light, position, eye_v, normal_v, round_specular=False)
-    Then result = Color(1.6328, 1.6328, 1.6328)
-
   Scenario: Lighting with the light behind the surface
     Given eye_v ← Vector(0, 0, -1)
     And normal_v ← Vector(0, 0, -1)

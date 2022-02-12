@@ -18,7 +18,9 @@ class World:
     def intersect(self, ray: Ray):
         intersections = Intersections()
         for shape in self.shapes:
-            intersections += shape.intersect(ray)
+            cur_intersections = shape.intersect(ray)
+            intersections += cur_intersections
+            # intersections += shape.intersect(ray)
         intersections.sort(key=lambda i: i.t)
         return intersections
 
@@ -27,7 +29,9 @@ class World:
             self.light_source,
             comp.point,
             comp.eyeVec,
-            comp.normalVec)
+            comp.normalVec,
+            round_specular=False
+        )
 
     def color_at(self, ray: Ray):
         intersections = self.intersect(ray)

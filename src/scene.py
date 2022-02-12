@@ -14,10 +14,10 @@ class LightSource:
 @dataclass
 class Material:
     color: Color = Color(1, 1, 1)
-    ambient: Decimal = Decimal(0.1)
-    diffuse: Decimal = Decimal(0.9)
-    specular: Decimal = Decimal(0.9)
-    shininess: Decimal = Decimal(200.0)
+    ambient: Decimal = Decimal('0.1')
+    diffuse: Decimal = Decimal('0.9')
+    specular: Decimal = Decimal('0.9')
+    shininess: Decimal = Decimal('200.0')
 
     def lighting(self, light, point, eye_v, normal_v, round_specular=True):
         # combine the surface color with the light's color/intensity
@@ -51,11 +51,11 @@ class Material:
                 factor = reflect_dot_eye ** self.shininess
                 specular = light.intensity * self.specular * factor
 
-            if round_specular:
-                # rounding to the tenth
-                specular.red = specular.red.quantize(Decimal('0.1'))
-                specular.blue = specular.blue.quantize(Decimal('0.1'))
-                specular.green = specular.green.quantize(Decimal('0.1'))
+            # if round_specular:
+            #     # rounding to the tenth
+            #     specular.red = specular.red.quantize(Decimal('0.1'))
+            #     specular.blue = specular.blue.quantize(Decimal('0.1'))
+            #     specular.green = specular.green.quantize(Decimal('0.1'))
 
         return ambient + diffuse + specular
 

@@ -114,7 +114,7 @@ def step_impl(context):
 
 @then('c.pixel_size = 0.01')
 def step_impl(context):
-    assert context.c.pixel_size == Decimal('0.01')
+    assert abs(context.c.pixel_size - Decimal('0.01')) < 0.00001
 
 
 @then('r.origin = Point(0, 0, 0)')
@@ -144,4 +144,5 @@ def step_impl(context):
 
 @then('canvas.pixel_at(5, 5) = Color(0.38066, 0.47583, 0.2855)')
 def step_impl(context):
+    p = context.canvas.pixel_at(5, 5)
     assert context.canvas.pixel_at(5, 5) == Color(0.38066, 0.47583, 0.2855)

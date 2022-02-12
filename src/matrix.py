@@ -56,11 +56,21 @@ class Matrix:
         self.__matrix[row][col] = Decimal(value)
 
     def __eq__(self, other):
-        if isinstance(other, Matrix):
-            return self.__row_num == other.__row_num \
-                   and self.__col_num == other.__col_num \
-                   and self.__matrix == other.__matrix
-        return False
+        if not isinstance(other, Matrix):
+            return False
+
+        if self.__row_num != other.__row_num or self.__col_num != other.__col_num:
+            return False
+
+        margin = 0.00001
+        return all(not all(self[row, col] - other[row, col] > margin for col in range(self.__col_num)) for row in
+                   range(self.__row_num))
+        # for row in range(self.__row_num):
+        #     for col in range(self.__col_num):
+        #         if self[row, col] - other[row, col] > margin:
+        #             return False
+        #
+        # return True
 
     def __mul__(self, other):
         if not isinstance(other, Matrix):
