@@ -29,8 +29,7 @@ class World:
             self.light_source,
             comp.point,
             comp.eyeVec,
-            comp.normalVec,
-            round_specular=False
+            comp.normalVec
         )
 
     def color_at(self, ray: Ray):
