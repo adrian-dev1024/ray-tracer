@@ -354,7 +354,5 @@ def step_impl(context):
 
 @then('t is the following 4x4 matrix')
 def step_impl(context):
-    t = context.t
     values = context.table.headings + list(itertools.chain(*context.table.rows))
-    a = Matrix(4, 4, values=list(map(Decimal, values)))
     assert context.t == Matrix(4, 4, values=list(map(Decimal, values)))
