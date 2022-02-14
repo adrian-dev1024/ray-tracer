@@ -37,6 +37,7 @@ class Material:
         if light_dot_normal >= 0 and not in_shadow:
             # compute the diffuse contribution
             diffuse = effective_color * self.diffuse * light_dot_normal
+            specular = Color(0, 0, 0)
 
             # reflect_dot_eye represents the cosine of the angle between the
             # reflection vector and the eye vector. A negative number means the
@@ -66,10 +67,10 @@ class PointOfView:
         left = forward.cross(up_norm)
         true_up = left.cross(forward)
         values = [
-            left.x,     left.y,     left.z,     0,
-            true_up.x,  true_up.y,  true_up.z,  0,
+            left.x, left.y, left.z, 0,
+            true_up.x, true_up.y, true_up.z, 0,
             -forward.x, -forward.y, -forward.z, 0,
-            0,          0,          0,          1
+            0, 0, 0, 1
         ]
         orientation = Matrix(4, 4, values)
         return orientation * TranslationMatrix(-self.frm.x, -self.frm.y, -self.frm.z)

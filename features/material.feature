@@ -47,7 +47,6 @@ Feature: Materials
     When result ← m.lighting(light, position, eye_v, normal_v)
     Then result = Color(0.1, 0.1, 0.1)
 
-  @wip
   Scenario: Lighting with the surface in shadow
     Given eye_v ← Vector(0, 0, -1)
     And normal_v ← Vector(0, 0, -1)
