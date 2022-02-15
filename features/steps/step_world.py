@@ -94,6 +94,26 @@ def step_impl(context):
     context.r = Ray(Point(0, 0, 0.75), Vector(0, 0, -1))
 
 
+@given('p ← Point(0, 10, 0)')
+def step_impl(context):
+    context.p = Point(0, 10, 0)
+
+
+@given('p ← Point(10, -10, 10)')
+def step_impl(context):
+    context.p = Point(10, -10, 10)
+
+
+@given('p ← Point(-20, 20, -20)')
+def step_impl(context):
+    context.p = Point(-20, 20, -20)
+
+
+@given('p ← Point(-2, 2, -2)')
+def step_impl(context):
+    context.p = Point(-2, 2, -2)
+
+
 @when('w ← default_world()')
 def step_impl(context):
     context.w = default_world()
@@ -182,3 +202,13 @@ def step_impl(context):
 @then(u'c = inner.material.color')
 def step_impl(context):
     assert context.c == context.inner.material.color
+
+
+@then('w.is_in_shadow(p) is false')
+def step_impl(context):
+    assert context.w.is_in_shadow(context.p) is False
+
+
+@then('w.is_in_shadow(p) is true')
+def step_impl(context):
+    assert context.w.is_in_shadow(context.p) is True

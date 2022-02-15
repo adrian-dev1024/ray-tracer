@@ -18,9 +18,7 @@ class World:
     def intersect(self, ray: Ray):
         intersections = Intersections()
         for shape in self.shapes:
-            cur_intersections = shape.intersect(ray)
-            intersections += cur_intersections
-            # intersections += shape.intersect(ray)
+            intersections += shape.intersect(ray)
         intersections.sort(key=lambda i: i.t)
         return intersections
 
@@ -44,6 +42,18 @@ class World:
             return Color(0, 0, 0)
 
         return self.shade_hit(hit.pre_compute(ray))
+
+    def is_in_shadow(self, p: Point):
+        diff_vector = self.light_source.position - p
+
+        distance = diff_vector.magnitude()
+        direction = diff_vector.normalize()
+
+        intersections = self.intersect(Ray(p, direction))
+
+        hit = intersections.hit()
+
+        return hit is not None and hit.t < distance
 
 
 def default_world():
