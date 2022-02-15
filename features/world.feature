@@ -65,25 +65,21 @@ Feature: World
     When c ← w.color_at(r)
     Then c = inner.material.color
 
-  @wip
   Scenario: There is no shadow when nothing is collinear with point and light
     Given w ← default_world()
     And p ← Point(0, 10, 0)
     Then w.is_in_shadow(p) is false
 
-  @wip
   Scenario: The shadow when an object is between the point and the light
     Given w ← default_world()
     And p ← Point(10, -10, 10)
     Then w.is_in_shadow(p) is true
 
-  @wip
   Scenario: There is no shadow when an object is behind the light
     Given w ← default_world()
     And p ← Point(-20, 20, -20)
     Then w.is_in_shadow(p) is false
 
-  @wip
   Scenario: There is no shadow when an object is behind the point
     Given w ← default_world()
     And p ← Point(-2, 2, -2)
