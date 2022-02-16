@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
+from src import EPSILON
+
 
 @dataclass
 class Color:
@@ -45,9 +47,8 @@ class Color:
             return NotImplemented
 
     def __eq__(self, other):
-        margin = 0.00001
-        return abs(self.red - other.red) < margin and abs(self.green - other.green) < margin and abs(
-            self.blue - other.blue) < margin
+        return abs(self.red - other.red) < EPSILON and abs(self.green - other.green) < EPSILON and abs(
+            self.blue - other.blue) < EPSILON
 
     def __str__(self):
         return f'(r={self.red},g={self.green},b={self.blue})'

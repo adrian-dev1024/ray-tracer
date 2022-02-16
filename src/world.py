@@ -7,6 +7,7 @@ from src.intersection import Intersections, IntersectionPreComputedValues
 from src.matrix import ScalingMatrix, Point
 from src.ray import Ray
 from src.scene import LightSource, Material
+from src.shapes.shape import Shape
 from src.shapes.sphere import Sphere
 
 
@@ -14,6 +15,9 @@ from src.shapes.sphere import Sphere
 class World:
     shapes: List = field(default_factory=lambda: [])
     light_source: LightSource = None
+
+    def add_shape(self, shape: Shape):
+        self.shapes.append(shape)
 
     def intersect(self, ray: Ray):
         intersections = Intersections()
@@ -27,7 +31,8 @@ class World:
             self.light_source,
             comp.point,
             comp.eyeVec,
-            comp.normalVec
+            comp.normalVec,
+            in_shadow=self.is_in_shadow(comp.over_point)
         )
 
     def color_at(self, ray: Ray):

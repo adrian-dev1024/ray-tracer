@@ -78,3 +78,11 @@ Feature: Intersections
     And comps.inside = true
     # normal would have been (0, 0, 1), but is inverted!
     And comps.normalVec = Vector(0, 0, -1)
+
+  Scenario: The hit should offset the point
+    Given r ← Ray(Point(0, 0, -5), Vector(0, 0, 1))
+    And shape ← Sphere(TranslationMatrix(0, 0, 1))
+    And i ← Intersection(5, shape)
+    When comps ← i.pre_compute(r)
+    Then comps.over_point.z < -EPSILON/2
+    And comps.point.z > comps.over_point.z

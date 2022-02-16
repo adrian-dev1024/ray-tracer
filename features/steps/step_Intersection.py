@@ -10,8 +10,9 @@ from decimal import Decimal
 
 from behave import given, then, when
 
+from src import EPSILON
 from src.intersection import Intersection, Intersections
-from src.matrix import Point, Vector
+from src.matrix import Point, Vector, TranslationMatrix
 from src.shapes.sphere import Sphere
 
 
@@ -90,9 +91,15 @@ def step_impl(context):
     context.i = Intersection(Decimal(1), context.shape)
 
 
-# @given('r ← Ray(Point(0, 0, -5), Pector(0, 0, 1))')
-# def step_impl(context):
-#     context.r = Ray(Point(0, 0, -5), Pector(0, 0, 1))
+@given('shape ← Sphere(TranslationMatrix(0, 0, 1))')
+def step_impl(context):
+    context.shape = Sphere(transform=TranslationMatrix(0, 0, 1))
+
+
+@given('i ← Intersection(5, shape)')
+def step_impl(context):
+    context.i = Intersection(Decimal(5), context.shape)
+
 
 
 @when('i ← Intersection(3.5, s)')
@@ -193,3 +200,13 @@ def step_impl(context):
 @then('comps.inside = true')
 def step_impl(context):
     assert context.comps.inside is True
+
+
+@then(u'comps.over_point.z < -EPSILON/2')
+def step_impl(context):
+    assert context.comps.over_point.z < -EPSILON/2
+
+
+@then(u'comps.point.z > comps.over_point.z')
+def step_impl(context):
+    assert context.comps.point.z > context.comps.over_point.z

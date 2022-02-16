@@ -12,7 +12,7 @@ from behave import given, then, when
 
 from src.color import Color
 from src.intersection import Intersection
-from src.matrix import Point, ScalingMatrix, Vector
+from src.matrix import Point, ScalingMatrix, Vector, TranslationMatrix
 from src.ray import Ray
 from src.scene import LightSource, Material
 from src.world import World, default_world
@@ -114,6 +114,36 @@ def step_impl(context):
     context.p = Point(-2, 2, -2)
 
 
+@given('w1 ← World(light)')
+def step_impl(context):
+    context.w1 = World(light_source=context.light)
+
+
+@given('s1 ← Sphere()')
+def step_impl(context):
+    context.s1 = Sphere()
+
+
+@given('s1 is added to w1')
+def step_impl(context):
+    context.w1.add_shape(context.s1)
+
+
+@given('s2 ← Sphere(TranslationMatrix(0, 0, 10))')
+def step_impl(context):
+    context.s2 = Sphere(transform=TranslationMatrix(0, 0, 10))
+
+
+@given('s2 is added to w1')
+def step_impl(context):
+    context.w1.add_shape(context.s2)
+
+
+@given('i ← Intersection(4, s2)')
+def step_impl(context):
+    context.i = Intersection(Decimal(4), context.s2)
+
+
 @when('w ← default_world()')
 def step_impl(context):
     context.w = default_world()
@@ -132,6 +162,11 @@ def step_impl(context):
 @when('c ← w.color_at(r)')
 def step_impl(context):
     context.c = context.w.color_at(context.r)
+
+
+@when('c ← w1.shade_hit(i.pre_compute(r))')
+def step_impl(context):
+    context.c = context.w1.shade_hit(context.i.pre_compute(context.r))
 
 
 @then('w contains no shapes')
@@ -212,3 +247,9 @@ def step_impl(context):
 @then('w.is_in_shadow(p) is true')
 def step_impl(context):
     assert context.w.is_in_shadow(context.p) is True
+
+
+@then('c = Color(0.1, 0.1, 0.1)')
+def step_impl(context):
+    c = context.c
+    assert context.c == Color(0.1, 0.1, 0.1)

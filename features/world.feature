@@ -55,16 +55,6 @@ Feature: World
     When c ← w.color_at(r)
     Then c = Color(0.38066, 0.47583, 0.2855)
 
-  Scenario: The color with an intersection behind the ray
-    Given w ← default_world()
-    And outer ← the first object in w
-    And outer.material.ambient ← 1
-    And inner ← the second object in w
-    And inner.material.ambient ← 1
-    And r ← Ray(Point(0, 0, 0.75), Vector(0, 0, -1))
-    When c ← w.color_at(r)
-    Then c = inner.material.color
-
   Scenario: There is no shadow when nothing is collinear with point and light
     Given w ← default_world()
     And p ← Point(0, 10, 0)
@@ -84,3 +74,27 @@ Feature: World
     Given w ← default_world()
     And p ← Point(-2, 2, -2)
     Then w.is_in_shadow(p) is false
+
+    # TODO Look into why if this is moved after test below the test fails!?!
+  @wip
+  Scenario: shade_hit() is given an intersection in shadow
+    Given light ← LightSource(Point(0, 0, -10), Color(1, 1, 1))
+    And w1 ← World(light)
+    And s1 ← Sphere()
+    And s1 is added to w1
+    And s2 ← Sphere(TranslationMatrix(0, 0, 10))
+    And s2 is added to w1
+    And r ← Ray(Point(0, 0, 5), Vector(0, 0, 1))
+    And i ← Intersection(4, s2)
+    When c ← w1.shade_hit(i.pre_compute(r))
+    Then c = Color(0.1, 0.1, 0.1)
+
+  Scenario: The color with an intersection behind the ray
+    Given w ← default_world()
+    And outer ← the first object in w
+    And outer.material.ambient ← 1
+    And inner ← the second object in w
+    And inner.material.ambient ← 1
+    And r ← Ray(Point(0, 0, 0.75), Vector(0, 0, -1))
+    When c ← w.color_at(r)
+    Then c = inner.material.color
