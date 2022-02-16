@@ -2,6 +2,7 @@ from collections import UserList
 from dataclasses import dataclass
 from decimal import Decimal
 
+from src import EPSILON
 from src.matrix import Vector, Point
 from src.ray import Ray
 from src.shapes.shape import Shape
@@ -15,6 +16,7 @@ class IntersectionPreComputedValues:
     eyeVec: Vector
     normalVec: Vector
     inside: bool
+    over_point: Point
 
 
 @dataclass
@@ -31,13 +33,16 @@ class Intersection:
             normalVec = -normalVec
             inside = True
 
+        over_point = point + normalVec * EPSILON
+
         return IntersectionPreComputedValues(
             self.t,
             self.shape,
             point,
             eyeVec,
             normalVec,
-            inside
+            inside,
+            over_point
         )
 
 

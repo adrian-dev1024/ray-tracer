@@ -2,6 +2,8 @@ import logging
 import math
 from decimal import Decimal, getcontext
 
+from src import EPSILON
+
 logger = logging.getLogger(__name__)
 
 
@@ -62,12 +64,11 @@ class Matrix:
         if self.__row_num != other.__row_num or self.__col_num != other.__col_num:
             return False
 
-        margin = 0.00001
-        return all(not all(self[row, col] - other[row, col] > margin for col in range(self.__col_num)) for row in
+        return all(not all(self[row, col] - other[row, col] > EPSILON for col in range(self.__col_num)) for row in
                    range(self.__row_num))
         # for row in range(self.__row_num):
         #     for col in range(self.__col_num):
-        #         if self[row, col] - other[row, col] > margin:
+        #         if self[row, col] - other[row, col] > EPSILON:
         #             return False
         #
         # return True
