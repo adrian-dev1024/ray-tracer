@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.0.1",
     author="Adrian Garay",
     author_email="agaray913@gmail.com",
-    description="A small example package",
+    description="Ray Tracer",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/adrian-dev1024/ray-tracer.git",

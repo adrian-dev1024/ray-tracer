@@ -1,18 +1,18 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from src.intersection import Intersections, Intersection
-from src.matrix import Point, Matrix, IdentityMatrix, Vector
+from src.matrix import Point, Matrix, Vector, point, identity_matrix
 from src.ray import Ray
-from src.scene import Material
+from src.scene import Material, material
 from src.shapes.shape import Shape
 
 
 @dataclass
 class Sphere(Shape):
-    center: Point = Point(0, 0, 0)
-    transform: Matrix = IdentityMatrix(4)
-    material: Material = Material()
-    name: str = 'Sphere'
+    name: str = field(default='Sphere')
+    center: Point = field(default_factory=point)
+    transform: Matrix = field(default_factory=identity_matrix)
+    material: Material = field(default_factory=material)
 
     def intersect(self, ray: Ray):
         transformed_ray = ray.transform(self.transform.inverse())

@@ -1,7 +1,7 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from decimal import Decimal
 
-from src.color import Color
+from src.color import Color, color
 from src.matrix import Point, Vector, Matrix, TranslationMatrix
 
 
@@ -13,7 +13,7 @@ class LightSource:
 
 @dataclass
 class Material:
-    color: Color = Color(1, 1, 1)
+    color: Color = field(default_factory=color)
     ambient: Decimal = Decimal('0.1')
     diffuse: Decimal = Decimal('0.9')
     specular: Decimal = Decimal('0.9')
@@ -54,6 +54,9 @@ class Material:
 
         return ambient
 
+
+def material():
+    return Material()
 
 @dataclass
 class PointOfView:

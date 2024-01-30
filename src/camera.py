@@ -1,12 +1,12 @@
 import math
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from decimal import Decimal
 from functools import cached_property, partial
 from multiprocessing import Pool
 
 from src.canvas import Canvas
-from src.matrix import Matrix, IdentityMatrix, Point
+from src.matrix import Matrix, IdentityMatrix, Point, identity_matrix
 from src.ray import Ray
 from src.world import World
 
@@ -16,7 +16,7 @@ class Camera:
     h_size: int
     v_size: int
     field_of_view: Decimal
-    transform: Matrix = IdentityMatrix()
+    transform: Matrix = field(default_factory=identity_matrix)
 
     @cached_property
     def half_view(self):
@@ -73,13 +73,13 @@ class Camera:
         color = world.color_at(ray)
         return x, y, color
 
-    def parallel_render(self, world: World):
+    def parallel_render(self, world: World, chunk_size=250):
         ts = time.time()
         canvas = Canvas(self.h_size, self.v_size)
 
         total_pixels = self.h_size * self.v_size
         start = 0
-        chunk_size = 100
+
         with Pool() as pool:
 
             for i in range(start, total_pixels, chunk_size):
