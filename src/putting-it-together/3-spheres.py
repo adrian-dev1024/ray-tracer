@@ -1,9 +1,10 @@
 import math
+import os
 from decimal import Decimal
 
 from src.camera import Camera
 from src.color import Color
-from src.matrix import ScalingMatrix, TranslationMatrix, RotationMatrix, Point, Vector
+from src.matrix import ScalingMatrix, TranslationMatrix, RotationMatrix, Point, Vector, ShearingMatrix
 from src.scene import Material, LightSource, PointOfView
 from src.shapes.sphere import Sphere
 from src.world import World
@@ -36,7 +37,7 @@ if __name__ == '__main__':
         name='right_wall'
     )
 
-    middle_transform = TranslationMatrix(-0.5, 1, 0.5)
+    middle_transform = TranslationMatrix(-0.5, 1, 0.5) * ScalingMatrix(1, 0.33, 1)
     middle_material = Material(color=Color(0.1, 1, 0.5),
                                diffuse=Decimal(0.7),
                                specular=Decimal(0.3))
@@ -47,8 +48,8 @@ if __name__ == '__main__':
         name='middle'
     )
 
-    right_transform = TranslationMatrix(1.5, 0.5, -0.5) * ScalingMatrix(0.5, 0.5, 0.5)
-    right_material = Material(color=Color(0.5, 1, 0.1),
+    right_transform = TranslationMatrix(1.5, 0.5, -0.5) * ScalingMatrix(0.5, 0.5, 0.5) * ShearingMatrix(x_y=0.33)
+    right_material = Material(color=Color(0.75, 1, 0.1),
                               diffuse=Decimal(0.7),
                               specular=Decimal(0.3))
     right = Sphere(
@@ -57,7 +58,7 @@ if __name__ == '__main__':
         name='right'
     )
 
-    left_transform = TranslationMatrix(-1.5, 0.33, -0.75) * ScalingMatrix(0.33, 0.33, 0.33)
+    left_transform = TranslationMatrix(-1.5, 0.33, -0.75) * ScalingMatrix(0.33, 1, 0.33)
     left_material = Material(color=Color(1, 0.8, 0.1),
                              diffuse=Decimal(0.7),
                              specular=Decimal(0.3))
@@ -82,3 +83,5 @@ if __name__ == '__main__':
 
     with open('/tmp/3_spheres.ppm', mode='w') as f:
         f.write(canvas.to_ppm())
+
+    os.system('open /tmp/3_spheres.ppm')

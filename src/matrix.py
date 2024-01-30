@@ -152,10 +152,10 @@ class Matrix:
     def scale(self, x, y, z):
         return ScalingMatrix(x, y, z) * self
 
-    def rotate(self,  x_radians=None, y_radians=None, z_radians=None):
+    def rotate(self, x_radians=None, y_radians=None, z_radians=None):
         return RotationMatrix(x_radians=x_radians, y_radians=y_radians, z_radians=z_radians) * self
 
-    def shear(self,  x_y=0, x_z=0, y_x=0, y_z=0, z_x=0, z_y=0):
+    def shear(self, x_y=0, x_z=0, y_x=0, y_z=0, z_x=0, z_y=0):
         return ShearingMatrix(x_y=x_y, x_z=x_z, y_x=y_x, y_z=y_z, z_x=z_x, z_y=z_y) * self
 
 
@@ -206,9 +206,9 @@ class Scalar(Matrix):
     def __eq__(self, other):
         if isinstance(other, Scalar):
             return self.x.quantize(5) == other.x.quantize(5) and \
-                   self.y.quantize(5) == other.y.quantize(5) and \
-                   self.z.quantize(5) == other.z.quantize(5) and \
-                   self.w.quantize(5) == other.w.quantize(5)
+                self.y.quantize(5) == other.y.quantize(5) and \
+                self.z.quantize(5) == other.z.quantize(5) and \
+                self.w.quantize(5) == other.w.quantize(5)
         return NotImplemented
 
     # TODO: Not sure what happens when adding a point to a point
@@ -256,6 +256,10 @@ class Point(Scalar):
 
     def __init__(self, x, y, z):
         super(Point, self).__init__(x, y, z, self.w)
+
+
+def point():
+    return Point(0, 0, 0)
 
 
 class Vector(Scalar):
@@ -313,6 +317,10 @@ class IdentityMatrix(Matrix):
 
     def transpose(self):
         return self
+
+
+def identity_matrix():
+    return IdentityMatrix()
 
 
 class TranslationMatrix(Matrix):

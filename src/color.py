@@ -52,3 +52,7 @@ class Color:
 
     def __str__(self):
         return f'(r={self.red},g={self.green},b={self.blue})'
+
+
+def color():
+    return Color(1, 1, 1)

@@ -1,26 +1,10 @@
 import abc
 
-from src.matrix import Point, Matrix
+from src.matrix import Point
 from src.ray import Ray
-from src.scene import Material
 
 
 class Shape(metaclass=abc.ABCMeta):
-
-    @property
-    @abc.abstractmethod
-    def material(self) -> Material:
-        raise NotImplementedError
-
-    @property
-    @abc.abstractmethod
-    def transform(self) -> Matrix:
-        raise NotImplementedError
-
-    @property
-    @abc.abstractmethod
-    def center(self) -> Point:
-        raise NotImplementedError
 
     @abc.abstractmethod
     def intersect(self, ray: Ray):
